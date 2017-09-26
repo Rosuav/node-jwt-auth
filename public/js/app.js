@@ -32,7 +32,8 @@ jQuery(function ($) {
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
-    adminUser: true    // admin user doesn't votes, admins races
+    adminUser: true,    // admin user doesn't votes, admins races
+    races: []
   };
 
   // Setup all the event listeners, passing STATE and event to handlers
@@ -57,14 +58,15 @@ jQuery(function ($) {
 
 function initializeApp() {
   return api.search()
-    .then(response => STORE.races = response)
-    .then(
-  // STORE.races = dummyData;
-  // console.log(STORE.races);
-  render.page(STORE));
+    .then(response => {
+      STORE.races = response;
+    })
+    .then( () => {
+      render.page(STORE);
+    });
 }
 
-
+// 
 // $('#create').on('submit', STORE, handle.create);
 // $('#search').on('submit', STORE, handle.search);
 // $('#edit').on('submit', STORE, handle.update);

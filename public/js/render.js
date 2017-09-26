@@ -33,6 +33,8 @@ var render = {
 
   electionResults: function(state) {
     let racesHtml = '';
+    // Object.keys(state).forEach(key => console.log(key));
+    console.log(state.races);
     state.races.forEach(race => {
       racesHtml += `
         <div class="race-block">
