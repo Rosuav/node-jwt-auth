@@ -25,6 +25,12 @@ var handle = {
     render.page(state);
   },
 
+  tempSignup: function(event) {
+    const state = event.data;
+    state.view = 'signup';
+    render.page(state);
+  },
+
   publicCancel: function(event) {
     const state = event.data;
     state.view = 'public';

@@ -37,6 +37,7 @@ jQuery(function ($) {
 
   // Setup all the event listeners, passing STATE and event to handlers
   $('#public-login-btn').on('click', STORE, handle.tempLogin);
+  $('#public-signup-btn').on('click', STORE, handle.tempSignup);
   $('.public-cancel').on('click', STORE, handle.publicCancel);
   $('#submit-votes-btn').on('click', STORE, handle.submitVotes);
   $('#election-admin').on('click', 'button', STORE, handle.electionAdmin);
