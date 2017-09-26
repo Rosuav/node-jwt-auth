@@ -10,6 +10,7 @@ mongoose.Promise = global.Promise;
 require('dotenv').config();
 
 const { router: usersRouter } = require('./users');
+const { router: racesRouter } = require('./races');
 const { router: authRouter, basicStrategy, jwtStrategy } = require('./auth');
 const { PORT, DATABASE_URL } = require('./config');
 const jwtAuth = passport.authenticate('jwt', { session: false });
@@ -24,6 +25,7 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/races/', racesRouter);
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 

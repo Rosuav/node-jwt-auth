@@ -11,7 +11,7 @@
  * 
  */
 
-const ITEMS_URL = '/api/items/';
+const RACES_URL = '/api/races/';
 const USERS_URL = '/api/users/';
 const LOGIN_URL = '/api/auth/login/';
 
@@ -54,7 +54,7 @@ var api = {
   },
   
   search: function (query) {
-    const url = buildUrl(ITEMS_URL, query);
+    const url = buildUrl(RACES_URL, query);
 
     return fetch(url, {
       method: 'GET',
@@ -66,7 +66,7 @@ var api = {
   },
   
   details: function (id) {
-    const url = buildUrl(`${ITEMS_URL}${id}`);
+    const url = buildUrl(`${RACES_URL}${id}`);
 
     return fetch(url, {
       method: 'GET',
@@ -78,7 +78,7 @@ var api = {
   },
   
   create: function (document, token) {
-    const url = buildUrl(`${ITEMS_URL}`);
+    const url = buildUrl(`${RACES_URL}`);
 
     return fetch(url, {
       method: 'POST',
@@ -93,7 +93,7 @@ var api = {
   },  
   
   update: function (document, token) {
-    const url = buildUrl(`${ITEMS_URL}${document.id}`);
+    const url = buildUrl(`${RACES_URL}${document.id}`);
 
     return fetch(url, {
       method: 'PUT',
@@ -108,7 +108,7 @@ var api = {
   },
   
   remove: function (id, token) {
-    const url = buildUrl(`${ITEMS_URL}${id}`);
+    const url = buildUrl(`${RACES_URL}${id}`);
 
     return fetch(url, {
       method: 'DELETE',

@@ -56,9 +56,12 @@ jQuery(function ($) {
 });
 
 function initializeApp() {
-  STORE.races = dummyData;
-  console.log(STORE.races);
-  render.page(STORE);
+  return api.search()
+    .then(response => STORE.races = response)
+    .then(
+  // STORE.races = dummyData;
+  // console.log(STORE.races);
+  render.page(STORE));
 }
 
 
