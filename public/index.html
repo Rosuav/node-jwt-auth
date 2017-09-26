@@ -12,7 +12,90 @@
 </head>
 
 <body>
-	<h2>API Client</h2>
+
+	<div id="public" class="view">
+		<h2>Public Results</h2>
+		<div id="public-results">
+			<!-- results html here -->	
+		</div>
+		<button type="button" id="public-login-btn" class="gen-btn">Login</button>
+	</div>
+
+	<div id="voting" class="view">
+		<h2>Voting</h2>
+		<div id="ballot-list">
+			<!-- ballot html here -->
+		</div>
+		<button type="button" id="submit-votes-btn" class="gen-btn">Submit</button>
+		<button type="button" id="submit-votes-cancel" class="gen-btn public-cancel">Cancel</button>
+	</div>
+
+	<div id="election-admin" class="view">
+		<h2>Election Admin</h2>
+		<button type="button" id="go-new-race-btn" class="gen-btn">Add New</button>
+		<button type="button" id="cancel-election-admin-btn" class="gen-btn public-cancel">Cancel</button>
+		<div id="election-admin-list">
+			<!-- election admin list html here -->
+		</div>
+	</div>
+
+	<div id="race-add" class="view">
+		<h2>Add new race</h2>
+		<button type="button" id="new-race-post-btn" class="gen-btn">Submit</button>
+		<button type="button" id="new-race-cancel-btn" class="gen-btn">Submit</button>
+	</div>
+
+	<form id="signup" class="view">
+		<fieldset>
+			<legend>Signup</legend>
+			<div>
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username">
+			</div>
+			<div>
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password">
+			</div>
+			<button type="submit">Signup</button>
+			Already have an account? <a href="" class="viewLogin">Login</a>
+		</fieldset>
+	</form>
+
+	<form id="login" class="view">
+		<fieldset>
+			<legend>Login</legend>
+			<div>
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username">
+			</div>
+			<div>
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password">
+			</div>
+			<button type="submit">Login</button>
+			Don't have an account? <a href="" class="viewSignup">Signup</a>
+		</fieldset>
+	</form>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	 crossorigin="anonymous"></script>
+
+	<script>
+		const BASE_URL = 'http://localhost:8080/v1';
+	</script>
+	<script src="js/api.js"></script>
+	<script src="js/render.js"></script>
+	<script src="js/handle.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/dummy-data.js"></script>
+</body>
+
+</html>
+
+
+
+<!--
+		<h2>API Client</h2>
 
 	<form id="search" class="view">
 		<fieldset>
@@ -61,49 +144,4 @@
 			<button type="submit">Submit</button>
 		</fieldset>
 	</form>
-
-	<form id="signup" class="view">
-		<fieldset>
-			<legend>Signup</legend>
-			<div>
-				<label for="username">Username</label>
-				<input type="text" id="username" name="username">
-			</div>
-			<div>
-				<label for="password">Password</label>
-				<input type="password" id="password" name="password">
-			</div>
-			<button type="submit">Signup</button>
-			Already have an account? <a href="" class="viewLogin">Login</a>
-		</fieldset>
-	</form>
-
-	<form id="login" class="view">
-		<fieldset>
-			<legend>Login</legend>
-			<div>
-				<label for="username">Username</label>
-				<input type="text" id="username" name="username">
-			</div>
-			<div>
-				<label for="password">Password</label>
-				<input type="password" id="password" name="password">
-			</div>
-			<button type="submit">Login</button>
-			Don't have an account? <a href="" class="viewSignup">Signup</a>
-		</fieldset>
-	</form>
-
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	 crossorigin="anonymous"></script>
-
-	<script>
-		const BASE_URL = 'http://localhost:8080/v1';
-	</script>
-	<script src="js/api.js"></script>
-	<script src="js/render.js"></script>
-	<script src="js/handle.js"></script>
-	<script src="js/app.js"></script>
-</body>
-
-</html>
+-->

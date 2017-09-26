@@ -1,3 +1,7 @@
+* {
+  font-family: Arial;
+}
+
 label {
   display: block;
   display:inline-block;
@@ -20,4 +24,30 @@ button {
 
 .view {
   display: none;
+}
+
+.race-block {
+  margin: 20px;
+}
+
+.race-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+li {
+  list-style-type: none;
+  font-size: 12px;
+}
+
+.radio-label {
+  float: left;
+  width: 100%;
+}
+
+input[type="radio"] {
+  float: left;
+  position: absolute;
+  margin-left: -20px;
 }

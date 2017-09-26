@@ -1,4 +1,4 @@
-/* global jQuery, handle */
+/* global jQuery, handle render dummyData */
 'use strict';
 /**
  * EVENT LISTENERS
@@ -26,30 +26,51 @@ var STORE;
 jQuery(function ($) {
 
   STORE = {
-    view: 'search', // signup | login | search | create | details | edit 
+    view: 'public', // signup | login | public | voting | election-admin | race-add 
     backTo: null,
     query: {},      // search query values
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
-    token: localStorage.getItem('authToken') // jwt token
+    token: localStorage.getItem('authToken'), // jwt token
+    adminUser: false    // admin user doesn't votes, admins races
   };
 
   // Setup all the event listeners, passing STATE and event to handlers
+  $('#public-login-btn').on('click', STORE, handle.tempLogin);
+  $('.public-cancel').on('click', STORE, handle.publicCancel);
+  $('#submit-votes-btn').on('click', STORE, handle.submitVotes);
+  $('#go-new-race-btn').on('click', STORE, handle.goNewRace);  
+  $('#new-race-post-btn').on('click', STORE, handle.postNewRace);  
+  $('#new-race-cancel-btn').on('click', STORE, handle.cancelNewRace);  
+  
+
   $('#signup').on('submit', STORE, handle.signup);
   $('#login').on('submit', STORE, handle.login);
-  $('#create').on('submit', STORE, handle.create);
-  $('#search').on('submit', STORE, handle.search);
-  $('#edit').on('submit', STORE, handle.update);
 
-  $('#result').on('click', '.detail', STORE, handle.details);
-  $('#result').on('click', '.remove', STORE, handle.remove);
-
-  $('#search').on('click', '.viewCreate', STORE, handle.viewCreate);
   $('#signup').on('click', '.viewLogin', STORE, handle.viewLogin);
   $('#login').on('click', '.viewSignup', STORE, handle.viewSignup);  
-  $('#detail').on('click', '.viewSearch', STORE, handle.viewSearch);
-  $('#detail').on('click', '.edit', STORE, handle.viewEdit);
 
-  // start app by triggering a search
-  $('#search').trigger('submit');
+  initializeApp();
+
 });
+
+function initializeApp() {
+  STORE.races = dummyData;
+  console.log(STORE.races);
+  render.page(STORE);
+}
+
+
+// $('#create').on('submit', STORE, handle.create);
+// $('#search').on('submit', STORE, handle.search);
+// $('#edit').on('submit', STORE, handle.update);
+
+// $('#result').on('click', '.detail', STORE, handle.details);
+// $('#result').on('click', '.remove', STORE, handle.remove);
+
+// $('#search').on('click', '.viewCreate', STORE, handle.viewCreate);
+// $('#detail').on('click', '.viewSearch', STORE, handle.viewSearch);
+// $('#detail').on('click', '.edit', STORE, handle.viewEdit);
+
+// // start app by triggering a search
+// $('#search').trigger('submit');
