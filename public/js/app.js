@@ -1,4 +1,4 @@
-/* global jQuery, handle render dummyData */
+/* global jQuery, handle render dummyData api*/
 'use strict';
 /**
  * EVENT LISTENERS
@@ -32,7 +32,6 @@ jQuery(function ($) {
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
-    adminUser: true,    // admin user doesn't votes, admins races
     races: []
   };
 

@@ -11,19 +11,26 @@
  * 
  */
 
+
+function fname() {}
+
+const myExpF = fname;
+
+
+
 var render = {
   page: function(state) {
     $('.view').hide();
 
     // call fs for specific rendering
     const states = {
-      public: () => render.electionResults(state),
-      voting: () => render.electionBallot(state),
-      'election-admin': () => render.raceAdminList(state)
+      public: render.electionResults,
+      voting: render.electionBallot,
+      'election-admin': render.raceAdminList
     };
 
     if(state.view in states) {
-      states[state.view]();
+      states[state.view](state);
     }
 
     // show current panel
@@ -33,8 +40,6 @@ var render = {
 
   electionResults: function(state) {
     let racesHtml = '';
-    // Object.keys(state).forEach(key => console.log(key));
-    console.log(state.races);
     state.races.forEach(race => {
       racesHtml += `
         <div class="race-block">
