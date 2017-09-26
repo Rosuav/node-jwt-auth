@@ -33,11 +33,11 @@ var render = {
 
   electionResults: function(state) {
     let racesHtml = '';
-    Object.keys(state.races).forEach(raceKey => {
+    state.races.forEach(race => {
       racesHtml += `
         <div class="race-block">
-          <span class="race-label">${state.races[raceKey].desc}</span>`;
-      state.races[raceKey].candidates.forEach(candidate => {
+          <span class="race-label">${race.type}</span>`;
+      race.candidates.forEach(candidate => {
         racesHtml += `
           <li>${candidate.name} - ${candidate.votes}</li>`;
       });
