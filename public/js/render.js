@@ -17,7 +17,8 @@ var render = {
     $('#' + state.view).show();
     const states = {
       public: () => render.electionResults(state),
-      voting: () => render.electionBallot(state)
+      voting: () => render.electionBallot(state),
+      'election-admin': () => render.raceAdminList(state)
     };
     states[state.view]();
   },
@@ -25,12 +26,12 @@ var render = {
   electionResults: function(state) {
     let racesHtml = '';
     Object.keys(state.races).forEach(raceKey => {
-      racesHtml += 
-        `<div class="race-block">
+      racesHtml += `
+        <div class="race-block">
           <span class="race-label">${state.races[raceKey].desc}</span>`;
       state.races[raceKey].candidates.forEach(candidate => {
-        racesHtml += 
-          `<li>${candidate.name} - ${candidate.votes}</li>`;
+        racesHtml += `
+          <li>${candidate.name} - ${candidate.votes}</li>`;
       });
       racesHtml += '</div>';
     });
@@ -40,14 +41,14 @@ var render = {
   electionBallot: function(state) {
     let racesHtml = '';
     Object.keys(state.races).forEach(raceKey => {
-      racesHtml += 
-        `<div class="race-block">
+      racesHtml += `
+        <div class="race-block">
           <span class="race-label">${state.races[raceKey].desc}</span>
             <div>`;
       state.races[raceKey].candidates.forEach(candidate => {
-        racesHtml += 
-          `<label for="${candidate.name.replace(' ','-')}" class="radio-label">
-            <input type="radio" id="${candidate.name.replace(' ','-')}" name="race"
+        racesHtml += ` 
+          <label for="${candidate.name.replace(' ','-')}" class="radio-label">
+            <input type="radio" id="${candidate.name.replace(' ','-')}" name="${raceKey}"
               value="${candidate.name}" />${candidate.name}
           </label>`;
       });
@@ -55,7 +56,24 @@ var render = {
     });
     $('#ballot-list').html(racesHtml);
   },
- 
+
+  raceAdminList: function(state) {
+    let racesHtml = '';
+    Object.keys(state.races).forEach(raceKey => {
+      racesHtml += `
+        <div class="admin-race-block">
+          <span class="race-label">${state.races[raceKey].desc}</span>`;
+      state.races[raceKey].candidates.forEach(candidate => {
+        racesHtml += `
+          <li>${candidate.name}</li>`;
+      });
+      racesHtml += `
+          <button type="button" id="e-${raceKey}" class="small-button">Edit</button>
+          <button type="button" id="d-${raceKey}" class="small-button">Delete</button>
+        </div>`;
+    });
+    $('#election-admin-list').html(racesHtml);
+  }
 
 
 

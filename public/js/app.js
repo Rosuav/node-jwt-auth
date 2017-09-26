@@ -26,20 +26,21 @@ var STORE;
 jQuery(function ($) {
 
   STORE = {
-    view: 'public', // signup | login | public | voting | election-admin | race-add 
+    view: 'public', // signup | login | public | voting | election-admin | race-edit 
     backTo: null,
     query: {},      // search query values
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
-    adminUser: false    // admin user doesn't votes, admins races
+    adminUser: true    // admin user doesn't votes, admins races
   };
 
   // Setup all the event listeners, passing STATE and event to handlers
   $('#public-login-btn').on('click', STORE, handle.tempLogin);
   $('.public-cancel').on('click', STORE, handle.publicCancel);
   $('#submit-votes-btn').on('click', STORE, handle.submitVotes);
-  $('#go-new-race-btn').on('click', STORE, handle.goNewRace);  
+  $('#election-admin').on('click', 'button', STORE, handle.electionAdmin);
+  $('#add-edit-race-frm').on('click', 'button', STORE, handle.addEditRace);  
   $('#new-race-post-btn').on('click', STORE, handle.postNewRace);  
   $('#new-race-cancel-btn').on('click', STORE, handle.cancelNewRace);  
   

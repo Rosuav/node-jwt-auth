@@ -34,6 +34,13 @@ var handle = {
   submitVotes: function(event) {
     const state = event.data;
     state.view = 'public';
+    countVotes(state);
+    render.page(state);
+  },
+
+  electionAdmin: function(event) {
+    const state = event.data;
+    state.view = 'race-edit';
     render.page(state);
   },
 
@@ -115,6 +122,14 @@ var handle = {
 
 };
 
+function countVotes(state) {
+  let candidateSelected;
+  let candidateObj;
+  Object.keys(state.races).forEach(raceKey => {
+    candidateSelected = $(`input[name=${raceKey}]:checked`).val();
+    state.races[raceKey].candidates.filter(obj => obj.name === candidateSelected)[0].votes+=1;
+  });
+}
 
 
 

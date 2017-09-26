@@ -39,10 +39,19 @@
 		</div>
 	</div>
 
-	<div id="race-add" class="view">
+	<div id="race-edit" class="view">
 		<h2>Add new race</h2>
-		<button type="button" id="new-race-post-btn" class="gen-btn">Submit</button>
-		<button type="button" id="new-race-cancel-btn" class="gen-btn">Submit</button>
+		<form id="add-edit-race-form">
+			<label for="race-type">Race type</label>
+			<input type="text" id="race-type"><br>
+			<label for="city">City, St</label>
+			<input type="text" id="city">
+			<input type="text" id="state"><br>
+			<label for="district">District</label>
+			<input type="text" id="district"><br>
+			<button type="button" id="new-race-post-btn" class="gen-btn">Submit</button>
+			<button type="button" id="new-race-cancel-btn" class="gen-btn">Cancel</button>
+		</form>
 	</div>
 
 	<form id="signup" class="view">
