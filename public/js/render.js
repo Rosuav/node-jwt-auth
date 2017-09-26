@@ -14,13 +14,21 @@
 var render = {
   page: function(state) {
     $('.view').hide();
-    $('#' + state.view).show();
+
+    // call fs for specific rendering
     const states = {
       public: () => render.electionResults(state),
       voting: () => render.electionBallot(state),
       'election-admin': () => render.raceAdminList(state)
     };
-    states[state.view]();
+
+    if(state.view in states) {
+      states[state.view]();
+    }
+
+    // show current panel
+    $('#' + state.view).show();
+
   },
 
   electionResults: function(state) {

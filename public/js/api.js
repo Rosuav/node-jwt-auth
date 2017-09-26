@@ -16,6 +16,7 @@ const USERS_URL = '/api/users/';
 const LOGIN_URL = '/api/auth/login/';
 
 var api = {
+  
   signup: function (username, password) {
     const url = buildUrl(USERS_URL);
     const body = {
@@ -33,6 +34,7 @@ var api = {
     }).then(normalizeResponseErrors)
       .then(res => res.json());
   },
+  
   login: function (username, password) {
     const url = buildUrl(LOGIN_URL);
     const base64Encoded = window.btoa(`${username}:${password}`);
@@ -46,6 +48,7 @@ var api = {
     }).then(normalizeResponseErrors)
       .then(res => res.json());
   },
+  
   search: function (query) {
     const url = buildUrl(ITEMS_URL, query);
 
@@ -57,6 +60,7 @@ var api = {
     }).then(normalizeResponseErrors)
       .then(res => res.json());
   },
+  
   details: function (id) {
     const url = buildUrl(`${ITEMS_URL}${id}`);
 
@@ -68,6 +72,7 @@ var api = {
     }).then(normalizeResponseErrors)
       .then(res => res.json());
   },
+  
   create: function (document, token) {
     const url = buildUrl(`${ITEMS_URL}`);
 
@@ -82,6 +87,7 @@ var api = {
     }).then(normalizeResponseErrors)
       .then(res => res.json());
   },  
+  
   update: function (document, token) {
     const url = buildUrl(`${ITEMS_URL}${document.id}`);
 
@@ -96,6 +102,7 @@ var api = {
     }).then(normalizeResponseErrors)
       .then(res => res.json());
   },
+  
   remove: function (id, token) {
     const url = buildUrl(`${ITEMS_URL}${id}`);
 

@@ -40,7 +40,15 @@ var handle = {
 
   electionAdmin: function(event) {
     const state = event.data;
-    state.view = 'race-edit';
+    if(event.target.id === 'go-new-race-btn'){
+      state.view = 'race-edit';
+    }
+    else if(event.target.id === 'cancel-election-admin-btn'){
+      state.view = 'public';
+    }
+    else {
+      // code for handling specific race button clicks
+    }
     render.page(state);
   },
 
