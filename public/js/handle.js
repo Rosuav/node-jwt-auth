@@ -82,9 +82,12 @@ var handle = {
     const el = $(event.target);
     const username = el.find('[name=username]').val().trim();
     const password = el.find('[name=password]').val().trim();
+    const city = el.find('[name=city]').val().trim();
+    const userState = el.find('[name=state]').val().trim();
+    const district = el.find('[name=district]').val().trim();
+    const adminUser = $('#signup-admin').is(':checked');
     el.trigger('reset');
-
-    api.signup(username, password)
+    api.signup(username, password, city, userState, district, adminUser)
       .then(() => {
         state.view = 'login';
         render.page(state);

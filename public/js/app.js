@@ -45,7 +45,6 @@ jQuery(function ($) {
   $('#new-race-post-btn').on('click', STORE, handle.postNewRace);  
   $('#new-race-cancel-btn').on('click', STORE, handle.cancelNewRace);  
   
-
   $('#signup').on('submit', STORE, handle.signup);
   $('#login').on('submit', STORE, handle.login);
 

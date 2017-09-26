@@ -14,8 +14,29 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  city: {
+    type: String,
+    required: true
+  },
+  state: {
+    type: String,
+    required: true
+  },
+  district: {
+    type: String,
+    required: true
+  },
+  adminUser: {
+    type: Boolean,
+    required: true,
+    default: false
   }
+
+
 });
+
+
 
 UserSchema.methods.apiRepr = function () {
   return { username: this.username };

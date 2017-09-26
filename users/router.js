@@ -10,7 +10,7 @@ const router = express.Router();
 const jsonParser = bodyParser.json();
 
 router.post('/', jsonParser, (req, res) => {
-  const requiredFields = ['username', 'password'];
+  const requiredFields = ['username', 'password', 'city', 'state', 'district', 'adminUser'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -52,7 +52,7 @@ router.post('/', jsonParser, (req, res) => {
 
   const sizedFields = {
     username: { min: 1 },
-    password: { min: 10, max: 72 }
+    password: { min: 8, max: 72 }
   };
   const tooSmallField = Object.keys(sizedFields).find(field =>
     'min' in sizedFields[field] &&
@@ -74,7 +74,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  let { username, password } = req.body;
+  let { username, password, city, state, district, adminUser } = req.body;
 
   return User.find({ username })
     .count()
@@ -90,7 +90,7 @@ router.post('/', jsonParser, (req, res) => {
       return User.hashPassword(password);
     })
     .then(hash => {
-      return User.create({ username, password: hash });
+      return User.create({ username, password: hash, city, state, district, adminUser });
     })
     .then(user => {
       return res.status(201).json(user.apiRepr());

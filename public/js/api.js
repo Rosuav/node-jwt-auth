@@ -17,11 +17,15 @@ const LOGIN_URL = '/api/auth/login/';
 
 var api = {
   
-  signup: function (username, password) {
+  signup: function (username, password, city, userState, district, adminUser) {
     const url = buildUrl(USERS_URL);
     const body = {
       username: username,
-      password: password
+      password: password,
+      city: city,
+      state: userState,
+      district: district,
+      adminUser: adminUser
     };
 
     return fetch(url, {
