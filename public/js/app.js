@@ -32,7 +32,7 @@ jQuery(function ($) {
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
-    adminUser: true    // admin user doesn't votes, admins races
+    adminUser: false    // admin user doesn't votes, admins races
   };
 
   // Setup all the event listeners, passing STATE and event to handlers
