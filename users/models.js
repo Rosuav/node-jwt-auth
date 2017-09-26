@@ -39,7 +39,12 @@ const UserSchema = mongoose.Schema({
 
 
 UserSchema.methods.apiRepr = function () {
-  return { username: this.username };
+  return { 
+    username: this.username, 
+    city: this.city, 
+    state: this.state, 
+    district: this.district, 
+    adminUser: this.adminUser };
 };
 
 UserSchema.methods.validatePassword = function (password) {

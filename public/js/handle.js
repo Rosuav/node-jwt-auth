@@ -21,7 +21,7 @@
 var handle = {
   tempLogin: function(event) {
     const state = event.data;
-    state.adminUser ? state.view = 'election-admin' : state.view = 'voting';
+    state.view = 'login';
     render.page(state);
   },
 
@@ -110,9 +110,14 @@ var handle = {
 
     api.login(username, password)
       .then(response => {
+        console.log(response);
         state.token = response.authToken;
         localStorage.setItem('authToken', state.token);
-        state.view = (state.backTo) ? state.backTo : 'search';
+        function parseJwt (token) {
+          var base64Url = token.split('.')[1];
+          var base64 = base64Url.replace('-', '+').replace('_', '/');
+          return JSON.parse(window.atob(base64));}
+        parseJwt(response.authToken).user.adminUser ? state.view = 'election-admin' : state.view = 'voting';
         render.page(state);
       })
       .catch(err => {
