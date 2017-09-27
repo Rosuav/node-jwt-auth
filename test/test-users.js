@@ -17,6 +17,9 @@ describe('/api/user', function () {
   const password = 'examplePass';
   const usernameB = 'exampleUserB';
   const passwordB = 'examplePassB';
+  const district = '1';
+  const state = 'OH';
+  const city = 'Columbus';
 
   before(function () {
     return runServer();
@@ -184,11 +187,11 @@ describe('/api/user', function () {
             expect(res.body.location).to.equal('username');
           });
       });
-      it('Should reject users with password less than ten characters', function () {
+      it('Should reject users with password less than eight characters', function () {
         return chai
           .request(app)
           .post('/api/users')
-          .send({ username, password: '123456789' })
+          .send({ username, password: '1234567' })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
           )
@@ -201,7 +204,7 @@ describe('/api/user', function () {
             expect(res).to.have.status(422);
             expect(res.body.reason).to.equal('ValidationError');
             expect(res.body.message).to.equal(
-              'Must be at least 10 characters long'
+              'Must be at least 8 characters long'
             );
             expect(res.body.location).to.equal('password');
           });
@@ -230,12 +233,12 @@ describe('/api/user', function () {
       });
       it('Should reject users with duplicate username', function () {
         // Create an initial user
-        return User.create({ username, password })
+        return User.create({ username, password, district, city, state })
           .then(() =>
             // Try to create a second user with the same username
             chai.request(app)
               .post('/api/users')
-              .send({ username, password })
+              .send({ username, password, district, city, state })
           )
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -258,11 +261,11 @@ describe('/api/user', function () {
         return chai
           .request(app)
           .post('/api/users')
-          .send({ username, password })
+          .send({ username, password, district, city, state })
           .then(res => {
             expect(res).to.have.status(201);
             expect(res.body).to.be.an('object');
-            expect(res.body).to.have.keys('username');
+            expect(res.body).to.have.keys('username', 'adminUser', 'city', 'district', 'hasVoted', 'state');
             expect(res.body.username).to.equal(username);
             return User.findOne({ username });
           })

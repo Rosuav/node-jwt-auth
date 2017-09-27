@@ -17,6 +17,9 @@ chai.use(chaiHttp);
 describe('Protected endpoint', function () {
   const username = 'exampleUser';
   const password = 'examplePass';
+  const district = '1';
+  const state = 'OH';
+  const city = 'Columbus';
 
   before(function () {
     return runServer();
@@ -28,7 +31,7 @@ describe('Protected endpoint', function () {
 
   beforeEach(function () {
     return User.hashPassword(password).then(password =>
-      User.create({ username, password })
+      User.create({ username, password, district, state, city })
     );
   });
 

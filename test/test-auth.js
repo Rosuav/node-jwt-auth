@@ -17,6 +17,11 @@ chai.use(chaiHttp);
 describe('Auth endpoints', function () {
   const username = 'exampleUser';
   const password = 'examplePass';
+  const district = '1';
+  const state = 'OH';
+  const city = 'Columbus';
+  const adminUser = false;
+  const hasVoted = false;
 
   before(function () {
     return runServer();
@@ -28,7 +33,7 @@ describe('Auth endpoints', function () {
 
   beforeEach(function () {
     return User.hashPassword(password).then(password =>
-      User.create({ username, password })
+      User.create({ username, password, district, state, city })
     );
   });
 
@@ -100,7 +105,7 @@ describe('Auth endpoints', function () {
           const payload = jwt.verify(token, JWT_SECRET, {
             // algorithm: ['HS256']
           });
-          expect(payload.user).to.deep.equal({ username });
+          expect(payload.user).to.deep.equal({ username, adminUser, city, district, hasVoted, state });
         });
     });
   });
