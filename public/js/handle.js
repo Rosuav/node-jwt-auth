@@ -1,4 +1,4 @@
-/* global $, render, api */
+/* global $, render, api refreshApp */
 'use strict';
 /**
  * EVENT HANDLERS (callback methods for jQuery events listeners)
@@ -86,6 +86,7 @@ var handle = {
     const userState = el.find('[name=state]').val().trim();
     const district = el.find('[name=district]').val().trim();
     const adminUser = $('#signup-admin').is(':checked');
+    const hasVoted = false;
     el.trigger('reset');
     api.signup(username, password, city, userState, district, adminUser)
       .then(() => {
@@ -110,7 +111,6 @@ var handle = {
 
     api.login(username, password)
       .then(response => {
-        console.log(response);
         state.token = response.authToken;
         localStorage.setItem('authToken', state.token);
         function parseJwt (token) {
@@ -118,6 +118,7 @@ var handle = {
           var base64 = base64Url.replace('-', '+').replace('_', '/');
           return JSON.parse(window.atob(base64));}
         parseJwt(response.authToken).user.adminUser ? state.view = 'election-admin' : state.view = 'voting';
+        refreshApp();
         render.page(state);
       })
       .catch(err => {

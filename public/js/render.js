@@ -40,13 +40,16 @@ var render = {
 
   electionResults: function(state) {
     let racesHtml = '';
+    let raceLabel = '';
     state.races.forEach(race => {
+      race.city!=='n/a' ? raceLabel = `${race.city}, ${race.state}` : raceLabel = race.state;
+      race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;
       racesHtml += `
         <div class="race-block">
-          <span class="race-label">${race.type}</span>`;
+          <span class="race-label">${raceLabel}</span>`;
       race.candidates.forEach(candidate => {
         racesHtml += `
-          <li>${candidate.name} - ${candidate.votes}</li>`;
+          <li>${candidate.candidate.name} - ${candidate.candidate.votes}</li>`;
       });
       racesHtml += '</div>';
     });
@@ -55,16 +58,19 @@ var render = {
 
   electionBallot: function(state) {
     let racesHtml = '';
-    Object.keys(state.races).forEach(raceKey => {
+    let raceLabel = '';
+    state.races.forEach(race => {
+      race.city!=='n/a' ? raceLabel = `${race.city}, ${race.state}` : raceLabel = race.state;
+      race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;
       racesHtml += `
         <div class="race-block">
-          <span class="race-label">${state.races[raceKey].desc}</span>
+          <span class="race-label">${raceLabel}</span>
             <div>`;
-      state.races[raceKey].candidates.forEach(candidate => {
+      race.candidates.forEach(candidate => {
         racesHtml += ` 
-          <label for="${candidate.name.replace(' ','-')}" class="radio-label">
-            <input type="radio" id="${candidate.name.replace(' ','-')}" name="${raceKey}"
-              value="${candidate.name}" />${candidate.name}
+          <label for="${candidate.candidate.name.replace(' ','-')}" class="radio-label">
+            <input type="radio" id="${candidate.candidate.name.replace(' ','-')}" name="${race.id}"
+              value="${candidate.candidate.name}" />${candidate.candidate.name}
           </label>`;
       });
       racesHtml += '</div></div>';

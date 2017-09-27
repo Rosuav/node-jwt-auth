@@ -21,4 +21,29 @@ router.get('/', jsonParser, (req, res)  => {
     });
 });
 
+router.put('/:id', (req, res) => {
+  if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    res.status(400).json({
+      error: 'Request path id / body id mismatch'
+    });
+  }
+  Race
+    .update(
+      {'_id': req.params.id, 'candidates.name': req.body.name},
+      {$inc: {'candidates.votes' : 1}}
+    );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = { router };

@@ -22,16 +22,18 @@ const RaceSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  candidates: [
-    {name: {
-      type: String,
-      required: true
-    },
-    votes: {
-      type: Number,
-      default: 0
-    }}
-  ]
+  candidates: [{
+    candidate: {
+      name: {
+        type: String,
+        required: true
+      },
+      votes: {
+        type: Number,
+        default: 0
+      }
+    }
+  }]
 });
 
 RaceSchema.virtual('raceLabel')

@@ -51,11 +51,11 @@ jQuery(function ($) {
   $('#signup').on('click', '.viewLogin', STORE, handle.viewLogin);
   $('#login').on('click', '.viewSignup', STORE, handle.viewSignup);  
 
-  initializeApp();
+  refreshApp();
 
 });
 
-function initializeApp() {
+function refreshApp() {
   return api.search()
     .then(response => {
       STORE.races = response;

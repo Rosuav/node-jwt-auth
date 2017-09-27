@@ -31,12 +31,15 @@ const UserSchema = mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
+  },
+  hasVoted: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 
 
 });
-
-
 
 UserSchema.methods.apiRepr = function () {
   return { 
@@ -44,7 +47,8 @@ UserSchema.methods.apiRepr = function () {
     city: this.city, 
     state: this.state, 
     district: this.district, 
-    adminUser: this.adminUser };
+    adminUser: this.adminUser,
+    hasVoted: this.hasVoted };
 };
 
 UserSchema.methods.validatePassword = function (password) {
