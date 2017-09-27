@@ -41,10 +41,8 @@ router.put('/:id', jsonParser, (req, res) => {
   }
   console.log(req.params.id);
   Race
-    .update(
-      {'candidates.candidate.name': req.body.name},
-      //{_id: req.params.id, 'candidates.candidate.name': req.body.name},
-      {$set: {'candidate.votes': 250}}
+    .update({_id: req.params.id, 'candidates._id': req.body.candidateId},
+      {$inc: {'candidates.$.votes': 1}}
     )
     .then(race => {
       res.status(204).end();

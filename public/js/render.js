@@ -35,6 +35,7 @@ var render = {
     }
 
     // show current panel
+    //$('.view').show();          // to show all views for ts
     $('#' + state.view).show();
 
   },
@@ -70,7 +71,7 @@ var render = {
       race.candidates.forEach(candidate => {
         racesHtml += ` 
           <label for="${candidate.candidate.name.replace(' ','-')}" class="radio-label">
-            <input type="radio" id="${candidate.candidate.name.replace(' ','-')}" name="${race.id}"
+            <input type="radio" id="${candidate.candidate.name.replace(' ','-')}" name="${race._id}"
               value="${candidate.candidate.name}" />${candidate.candidate.name}
           </label>`;
       });
@@ -103,6 +104,20 @@ var render = {
   raceAdd: function(state) {
     $('.race-input-candidate').hide();
     $('#candidate-1').show();
+    if(state.editingRaceId) {
+      const currRace = state.races.filter(el => el._id === state.editingRaceId)[0];
+      $('#edited-race-id').text(currRace._id);
+      $('#race-type').val(currRace.type);
+      $('#city').val(currRace.city);
+      $('#state').val(currRace.state);
+      $('#district').val(currRace.district);
+      let i = 0;
+      currRace.candidates.forEach(candidate => {
+        i++;
+        $('#candidate-' + i).show();
+        $('#candidate-' + i).val(currRace.candidates[i-1].candidate.name);
+      });      
+    }
   },
 
   candidateAdd: function(state) {

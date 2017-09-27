@@ -57,9 +57,11 @@ var handle = {
     else if(event.target.id.charAt(0) === 'd'){
       handle.raceDelete(event.target.id, state);
     }
-    
+    else if(event.target.id.charAt(0) === 'e'){
+      state.editingRaceId = event.target.id.slice(2);
+      state.view = 'race-edit';
+    }
     render.page(state);
-
   },
 
   newCandidate: function(event) {
@@ -70,7 +72,7 @@ var handle = {
     } 
   },
 
-  postNewRace: function(event) {
+  editRacePost: function(event) {
     const state = event.data;
     state.newItem.type = $('#race-type').val();
     state.newItem.city = $('#city').val();
@@ -89,22 +91,45 @@ var handle = {
     }
 
     render.clearRaceEdit(state);
+    state.editingRaceId ? handle.updateRace(state) : handle.postNewRace(state);
+  },
+
+  postNewRace: function(state) {
     api.create(state.newItem, state.token)
       .then(response => {
         state.view = 'election-admin';
-        state.item = response;
+        state.item = response;              // can go away?
         state.newItem = null;
-        refreshApp();
+        refreshApp();                       // need a then?
         render.page(state);
       })
       .catch(err => {
-        if (err.code === 401) {
+        if (err.code === 401) {           // update this for this function
           state.backTo = state.view;
           state.view = 'signup';
         }
         console.error(err);
       });
   },
+
+  updateRace: function(state) {
+    api.update(state.newItem, state.token)
+      .then(response => {
+        state.view = 'election-admin';
+        state.item = response;              // can go away?
+        state.newItem = null;
+        refreshApp();
+        render.page(state);
+      })
+      .catch(err => {
+        if (err.code === 401) {           // update this for this function
+          state.backTo = state.view;
+          state.view = 'signup';
+        }
+        console.error(err);        
+      });
+  },
+
 
   raceDelete: function(id, state) {
     id = id.slice(2);
@@ -124,6 +149,7 @@ var handle = {
 
   cancelNewRace: function(event) {
     const state = event.data;
+    state.editingRaceId = null;
     state.view = 'election-admin';
     render.page(state);
   },
