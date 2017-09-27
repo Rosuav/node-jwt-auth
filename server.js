@@ -57,6 +57,8 @@ function runServer() {
   });
 }
 
+// added this
+
 function closeServer() {
   return mongoose.disconnect().then(() => {
     return new Promise((resolve, reject) => {
