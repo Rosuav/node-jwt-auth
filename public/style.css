@@ -1,5 +1,5 @@
 * {
-  font-family: Arial;
+  font-family: "Helvetica", Arial, sans-serif;
 }
 
 label {
@@ -19,7 +19,17 @@ button {
   width: 100px;
   margin-left: 20px;
   margin-top: 20px;
-  background-color: lightblue;
+  background-color: #6FC6E0;
+  color: white;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+
+button:hover {
+  background-color: #63C4E2;
+  box-shadow: 0 0 10px rgba(0,0,0,.4)
 }
 
 .small-button {
@@ -29,6 +39,9 @@ button {
   background-color: #CACACA;
 }
 
+#public h2 {
+  text-align: center;
+}
 
 .view {
   display: none;
