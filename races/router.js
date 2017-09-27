@@ -2,12 +2,16 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 const { Race } = require('./models');
 
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
 
 router.get('/', jsonParser, (req, res)  => {
   Race
@@ -33,16 +37,20 @@ router.get('/:id', jsonParser, (req, res)  => {
     });
 });
 
+
+
+
+
 router.put('/:id', jsonParser, (req, res) => {
-  if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    res.status(400).json({
-      error: 'Request path id / body id mismatch'
-    });
-  }
+  // if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+  //   res.status(400).json({
+  //     error: 'Request path id / body id mismatch'
+  //   });
+  // }
   console.log(req.params.id);
   Race
-    .update({_id: req.params.id, 'candidates._id': req.body.candidateId},
-      {$inc: {'candidates.$.votes': 1}}
+    .update({_id: '59cbc0285969b065cca4eb13', 'candidates._id': '59cbc0285969b065cca4eb15'},
+      {$inc: {'candidates.$.candidate.votes': 1}}
     )
     .then(race => {
       res.status(204).end();
@@ -52,7 +60,11 @@ router.put('/:id', jsonParser, (req, res) => {
     });
 });
 
-router.post('/', jsonParser, (req, res) => {
+//db.collection.update({a:1, "b._id":341445} , {$inc:{"b.$.c":1}})
+
+
+
+router.post('/', jsonParser, jwtAuth, (req, res) => {
 
   Race
     .create({
