@@ -26,7 +26,8 @@ var render = {
     const states = {
       public: render.electionResults,
       voting: render.electionBallot,
-      'election-admin': render.raceAdminList
+      'election-admin': render.raceAdminList,
+      'race-edit': render.raceAdd
     };
 
     if(state.view in states) {
@@ -34,6 +35,7 @@ var render = {
     }
 
     // show current panel
+    //$('.view').show();          // to show all views for ts
     $('#' + state.view).show();
 
   },
@@ -69,7 +71,7 @@ var render = {
       race.candidates.forEach(candidate => {
         racesHtml += ` 
           <label for="${candidate.candidate.name.replace(' ','-')}" class="radio-label">
-            <input type="radio" id="${candidate.candidate.name.replace(' ','-')}" name="${race.id}"
+            <input type="radio" id="${candidate.candidate.name.replace(' ','-')}" name="${race._id}"
               value="${candidate.candidate.name}" />${candidate.candidate.name}
           </label>`;
       });
@@ -80,23 +82,53 @@ var render = {
 
   raceAdminList: function(state) {
     let racesHtml = '';
-    Object.keys(state.races).forEach(raceKey => {
+    let raceLabel = '';
+    state.races.forEach(race => {
+      race.city!=='n/a' ? raceLabel = `${race.city}, ${race.state}` : raceLabel = race.state;
+      race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;      
       racesHtml += `
-        <div class="admin-race-block">
-          <span class="race-label">${state.races[raceKey].desc}</span>`;
-      state.races[raceKey].candidates.forEach(candidate => {
+        <div class="admin-race-block" id="${race._id}"d>
+          <span class="race-label">${raceLabel}</span>`;
+      race.candidates.forEach(candidate => {
         racesHtml += `
-          <li>${candidate.name}</li>`;
+          <li>${candidate.candidate.name}</li>`;
       });
       racesHtml += `
-          <button type="button" id="e-${raceKey}" class="small-button">Edit</button>
-          <button type="button" id="d-${raceKey}" class="small-button">Delete</button>
+          <button type="button" id="e-${race._id}" class="small-button race-edit-btn">Edit</button>
+          <button type="button" id="d-${race._id}" class="small-button race-delete-btn">Delete</button>
         </div>`;
     });
     $('#election-admin-list').html(racesHtml);
+  },
+
+  raceAdd: function(state) {
+    $('.race-input-candidate').hide();
+    $('#candidate-1').show();
+    if(state.editingRaceId) {
+      const currRace = state.races.filter(el => el._id === state.editingRaceId)[0];
+      $('#edited-race-id').text(currRace._id);
+      $('#race-type').val(currRace.type);
+      $('#city').val(currRace.city);
+      $('#state').val(currRace.state);
+      $('#district').val(currRace.district);
+      let i = 0;
+      currRace.candidates.forEach(candidate => {
+        i++;
+        $('#candidate-' + i).show();
+        $('#candidate-' + i).val(currRace.candidates[i-1].candidate.name);
+      });      
+    }
+  },
+
+  candidateAdd: function(state) {
+    $('#candidate-' + state.visibleCandidates).show();
+  },
+
+  clearRaceEdit: function(state) {
+    $('.race-input').val('');
+    $('.race-input-candidate').val('');
+    render.raceAdd(state);   
   }
-
-
 
 };    // end of render()
 

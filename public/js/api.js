@@ -79,7 +79,6 @@ var api = {
   
   create: function (document, token) {
     const url = buildUrl(`${RACES_URL}`);
-
     return fetch(url, {
       method: 'POST',
       headers: {
@@ -103,8 +102,8 @@ var api = {
         'Accept': 'application/json'
       },
       body: document ? JSON.stringify(document) : null
-    }).then(normalizeResponseErrors)
-      .then(res => res.json());
+    }).then(normalizeResponseErrors);
+    //.then(res => res.json());
   },
   
   remove: function (id, token) {

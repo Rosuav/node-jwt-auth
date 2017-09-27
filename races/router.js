@@ -23,7 +23,7 @@ router.get('/', jsonParser, (req, res)  => {
 
 router.get('/:id', jsonParser, (req, res)  => {
   Race
-    .findOne(req.params.id)
+    .findById(req.params.id)
     .then(race => {
       res.json(race.apiRepr());
     })
@@ -33,29 +33,62 @@ router.get('/:id', jsonParser, (req, res)  => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', jsonParser, (req, res) => {
   if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request path id / body id mismatch'
     });
   }
+  console.log(req.params.id);
   Race
-    .update(
-      {'_id': req.params.id, 'candidates.name': req.body.name},
-      {$inc: {'candidates.votes' : 1}}
-    );
+    .update({_id: req.params.id, 'candidates._id': req.body.candidateId},
+      {$inc: {'candidates.$.votes': 1}}
+    )
+    .then(race => {
+      res.status(204).end();
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Internal server error'});
+    });
 });
 
+router.post('/', jsonParser, (req, res) => {
 
+  Race
+    .create({
+      type: req.body.type,
+      city: req.body.city,
+      state: req.body.state,
+      district: req.body.district,
+      candidates: req.body.candidates})
+    .then(
+      race => res.status(201).json(race.apiRepr()))
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
+});
 
+router.delete('/:id', (req, res) => {
+  
+  Race
+    .findByIdAndRemove(req.params.id)
+    .then(() => {
+      console.log(`Deleted race with id = ${req.params.id}`);
+      req.status(204).end();
+    });
+});
 
-
-
-
-
-
-
-
+router.put('/:id', (req, res) => {
+  console.log('put call received');
+  Race
+    .findOneAndUpdate(
+      {_id: req.params.id},
+      req.body
+    )
+    .then(race => res.status(204).end())
+    .catch(err => res.status(500).json({message: 'Internal server error'}));
+});
 
 
 module.exports = { router };

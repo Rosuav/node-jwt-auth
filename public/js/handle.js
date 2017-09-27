@@ -46,37 +46,115 @@ var handle = {
 
   electionAdmin: function(event) {
     const state = event.data;
+    console.log(event.target.id);
     if(event.target.id === 'go-new-race-btn'){
+      state.visibleCandidates = 1;
       state.view = 'race-edit';
     }
     else if(event.target.id === 'cancel-election-admin-btn'){
       state.view = 'public';
     }
-    else {
-      // code for handling specific race button clicks
+    else if(event.target.id.charAt(0) === 'd'){
+      handle.raceDelete(event.target.id, state);
+    }
+    else if(event.target.id.charAt(0) === 'e'){
+      state.editingRaceId = event.target.id.slice(2);
+      state.view = 'race-edit';
     }
     render.page(state);
   },
 
-  goNewRace: function(event) {
+  newCandidate: function(event) {
     const state = event.data;
-    state.view = 'race-add';
-    render.page(state);
+    if(state.visibleCandidates < 9) {
+      state.visibleCandidates += 1;
+      render.candidateAdd(state);
+    } 
   },
 
-  postNewRace: function(event) {
+  editRacePost: function(event) {
     const state = event.data;
-    state.view = 'election-admin';
-    render.page(state);
+    state.newItem.type = $('#race-type').val();
+    state.newItem.city = $('#city').val();
+    state.newItem.state = $('#state').val();
+    state.newItem.district = $('#district').val();
+    state.newItem.candidates = [];
+    for(let i = 1; i <= state.visibleCandidates; i++) {
+      if($('#candidate-' + i)) {
+        state.newItem.candidates.push(
+          {candidate: {
+            name: $('#candidate-' + i).val(),
+            votes: 0}
+          }
+        );
+      }
+    }
+
+    render.clearRaceEdit(state);
+    state.editingRaceId ? handle.updateRace(state) : handle.postNewRace(state);
+  },
+
+  postNewRace: function(state) {
+    api.create(state.newItem, state.token)
+      .then(response => {
+        state.view = 'election-admin';
+        state.item = response;              // can go away?
+        state.newItem = null;
+        refreshApp();                       // need a then?
+        render.page(state);
+      })
+      .catch(err => {
+        if (err.code === 401) {           // update this for this function
+          state.backTo = state.view;
+          state.view = 'signup';
+        }
+        console.error(err);
+      });
+  },
+
+  updateRace: function(state) {
+    state.newItem.id = state.editingRaceId;
+    api.update(state.newItem, state.token)
+      .then(response => {
+        state.view = 'election-admin';
+        state.item = response;              // can go away?
+        state.newItem = null;
+        refreshApp();
+        render.page(state);
+      })
+      .catch(err => {
+        if (err.code === 401) {           // update this for this function
+          state.backTo = state.view;
+          state.view = 'signup';
+        }
+        console.error(err);        
+      });
+  },
+
+  raceDelete: function(id, state) {
+    id = id.slice(2);
+    return api.remove(id, state.token)
+      .then(() => {
+        refreshApp();
+      })
+      .catch(err => {
+        if (err.code === 401) {
+          state.backTo = state.view;
+          state.view = 'signup';
+          render.page(state);
+        }
+        console.error(err);
+      });
   },
 
   cancelNewRace: function(event) {
     const state = event.data;
+    state.editingRaceId = null;
     state.view = 'election-admin';
     render.page(state);
   },
 
-  signup: function (event) {
+  signup: function(event) {
     event.preventDefault();
     const state = event.data;
     const el = $(event.target);

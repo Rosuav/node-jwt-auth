@@ -43,6 +43,7 @@ RaceSchema.virtual('raceLabel')
 
 RaceSchema.methods.apiRepr = function () {
   return {
+    id: this._id,
     type: this.type,
     city: this.city,
     state: this.state,
