@@ -55,8 +55,7 @@ router.put('/:id', jsonParser, (req, res) => {
 });
 
 router.post('/', jsonParser, (req, res) => {
-  console.log('running post');
-  console.log(req.body);
+
   Race
     .create({
       type: req.body.type,
@@ -71,6 +70,18 @@ router.post('/', jsonParser, (req, res) => {
       res.status(500).json({message: 'Internal server error'});
     });
 });
+
+router.delete('/:id', (req, res) => {
+  
+  Race
+    .findByIdAndRemove(req.params.id)
+    .then(() => {
+      console.log(`Deleted race with id = ${req.params.id}`);
+      req.status(204).end();
+    });
+});
+
+
 
 
 module.exports = { router };

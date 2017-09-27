@@ -93,8 +93,8 @@ var render = {
           <li>${candidate.candidate.name}</li>`;
       });
       racesHtml += `
-          <button type="button" id="e-${race._id}" class="small-button race-edit-button">Edit</button>
-          <button type="button" id="d-${race._id}" class="small-button race-delete-button">Delete</button>
+          <button type="button" id="e-${race._id}" class="small-button race-edit-btn">Edit</button>
+          <button type="button" id="d-${race._id}" class="small-button race-delete-btn">Delete</button>
         </div>`;
     });
     $('#election-admin-list').html(racesHtml);

@@ -59,6 +59,7 @@ jQuery(function ($) {
 });
 
 function refreshApp() {
+  console.log('refresh running');
   return api.search()
     .then(response => {
       STORE.races = response;

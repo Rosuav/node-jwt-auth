@@ -46,6 +46,7 @@ var handle = {
 
   electionAdmin: function(event) {
     const state = event.data;
+    console.log(event.target.id);
     if(event.target.id === 'go-new-race-btn'){
       state.visibleCandidates = 1;
       state.view = 'race-edit';
@@ -53,10 +54,12 @@ var handle = {
     else if(event.target.id === 'cancel-election-admin-btn'){
       state.view = 'public';
     }
-    else {
-      // code for handling specific race button clicks
+    else if(event.target.id.charAt(0) === 'd'){
+      handle.raceDelete(event.target.id, state);
     }
+    
     render.page(state);
+
   },
 
   newCandidate: function(event) {
@@ -91,6 +94,7 @@ var handle = {
         state.view = 'election-admin';
         state.item = response;
         state.newItem = null;
+        refreshApp();
         render.page(state);
       })
       .catch(err => {
@@ -102,13 +106,29 @@ var handle = {
       });
   },
 
+  raceDelete: function(id, state) {
+    id = id.slice(2);
+    return api.remove(id, state.token)
+      .then(() => {
+        refreshApp();
+      })
+      .catch(err => {
+        if (err.code === 401) {
+          state.backTo = state.view;
+          state.view = 'signup';
+          render.page(state);
+        }
+        console.error(err);
+      });
+  },
+
   cancelNewRace: function(event) {
     const state = event.data;
     state.view = 'election-admin';
     render.page(state);
   },
 
-  signup: function (event) {
+  signup: function(event) {
     event.preventDefault();
     const state = event.data;
     const el = $(event.target);
