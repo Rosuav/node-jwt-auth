@@ -113,6 +113,7 @@ var handle = {
   },
 
   updateRace: function(state) {
+    state.newItem.id = state.editingRaceId;
     api.update(state.newItem, state.token)
       .then(response => {
         state.view = 'election-admin';
@@ -129,7 +130,6 @@ var handle = {
         console.error(err);        
       });
   },
-
 
   raceDelete: function(id, state) {
     id = id.slice(2);

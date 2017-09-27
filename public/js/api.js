@@ -102,8 +102,8 @@ var api = {
         'Accept': 'application/json'
       },
       body: document ? JSON.stringify(document) : null
-    }).then(normalizeResponseErrors)
-      .then(res => res.json());
+    }).then(normalizeResponseErrors);
+    //.then(res => res.json());
   },
   
   remove: function (id, token) {
