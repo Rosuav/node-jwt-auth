@@ -79,7 +79,6 @@ var api = {
   
   create: function (document, token) {
     const url = buildUrl(`${RACES_URL}`);
-
     return fetch(url, {
       method: 'POST',
       headers: {

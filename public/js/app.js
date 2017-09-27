@@ -29,6 +29,8 @@ jQuery(function ($) {
     view: 'public', // signup | login | public | voting | election-admin | race-edit 
     backTo: null,
     query: {},      // search query values
+    newItem: {},    // pending new race
+    visibleCandidates: 0,   // candidates displayed on add/edit race page
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
@@ -44,7 +46,8 @@ jQuery(function ($) {
   $('#add-edit-race-frm').on('click', 'button', STORE, handle.addEditRace);  
   $('#new-race-post-btn').on('click', STORE, handle.postNewRace);  
   $('#new-race-cancel-btn').on('click', STORE, handle.cancelNewRace);  
-  
+  $('#add-candidate-btn').on('click', STORE, handle.newCandidate);
+
   $('#signup').on('submit', STORE, handle.signup);
   $('#login').on('submit', STORE, handle.login);
 

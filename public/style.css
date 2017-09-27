@@ -2,6 +2,10 @@
   font-family: Arial;
 }
 
+.hidden {
+  display: none;
+}
+
 label {
   display: block;
   display:inline-block;
