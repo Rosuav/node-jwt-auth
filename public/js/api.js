@@ -12,6 +12,7 @@
  */
 
 const RACES_URL = '/api/races/';
+const VOTE_URL = '/api/races/votes/';
 const USERS_URL = '/api/users/';
 const LOGIN_URL = '/api/auth/login/';
 
@@ -92,8 +93,27 @@ var api = {
   },  
   
   update: function (document, token) {
+    console.log('update running');
     const url = buildUrl(`${RACES_URL}${document.id}`);
-
+    // console.log('url: ', url);
+    // console.log(document);
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: document ? JSON.stringify(document) : null
+    }).then(normalizeResponseErrors);
+    //.then(res => res.json());
+  },
+  
+  vote: function (document, token) {
+    console.log('update running');
+    const url = buildUrl(`${VOTE_URL}${document._id}`);
+    // console.log('url: ', url);
+    // console.log(document);
     return fetch(url, {
       method: 'PUT',
       headers: {
@@ -108,7 +128,6 @@ var api = {
   
   remove: function (id, token) {
     const url = buildUrl(`${RACES_URL}${id}`);
-
     return fetch(url, {
       method: 'DELETE',
       headers: {

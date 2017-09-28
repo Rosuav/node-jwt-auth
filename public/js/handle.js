@@ -41,7 +41,6 @@ var handle = {
     const state = event.data;
     state.view = 'public';
     countVotes(state);
-    render.page(state);
   },
 
   electionAdmin: function(event) {
@@ -50,9 +49,11 @@ var handle = {
     if(event.target.id === 'go-new-race-btn'){
       state.visibleCandidates = 1;
       state.view = 'race-edit';
+      render.page(state);
     }
     else if(event.target.id === 'cancel-election-admin-btn'){
       state.view = 'public';
+      refreshApp();
     }
     else if(event.target.id.charAt(0) === 'd'){
       handle.raceDelete(event.target.id, state);
@@ -60,8 +61,9 @@ var handle = {
     else if(event.target.id.charAt(0) === 'e'){
       state.editingRaceId = event.target.id.slice(2);
       state.view = 'race-edit';
+      render.page(state);
     }
-    render.page(state);
+    refreshApp();
   },
 
   newCandidate: function(event) {
@@ -74,58 +76,36 @@ var handle = {
 
   editRacePost: function(event) {
     const state = event.data;
-    state.newItem.type = $('#race-type').val();
-    state.newItem.city = $('#city').val();
-    state.newItem.state = $('#state').val();
-    state.newItem.district = $('#district').val();
-    state.newItem.candidates = [];
-    for(let i = 1; i <= state.visibleCandidates; i++) {
-      if($('#candidate-' + i)) {
-        state.newItem.candidates.push(
-          {candidate: {
-            name: $('#candidate-' + i).val(),
-            votes: 0}
-          }
-        );
-      }
-    }
-
-    render.clearRaceEdit(state);
-    state.editingRaceId ? handle.updateRace(state) : handle.postNewRace(state);
+    // console.log('get race Obj');
+    let raceObj = getRaceObject(state);
+    // console.log('call follow-on handler', state.editingRaceId);
+    state.editingRaceId ? handle.updateRace(state, raceObj) : handle.postNewRace(state, raceObj);
   },
 
-  postNewRace: function(state) {
-    api.create(state.newItem, state.token)
+  postNewRace: function(state, raceObj) {
+    api.create(raceObj, state.token)
       .then(response => {
         state.view = 'election-admin';
-        state.item = response;              // can go away?
-        state.newItem = null;
-        refreshApp();                       // need a then?
-        render.page(state);
+        refreshApp();
       })
       .catch(err => {
-        if (err.code === 401) {           // update this for this function
-          state.backTo = state.view;
-          state.view = 'signup';
+        if (err.code === 401) {
+          state.view = 'election-admin';
         }
         console.error(err);
       });
   },
 
-  updateRace: function(state) {
-    state.newItem.id = state.editingRaceId;
-    api.update(state.newItem, state.token)
+  updateRace: function(state, raceObj) {
+    raceObj.id = state.editingRaceId;
+    api.update(raceObj, state.token)
       .then(response => {
         state.view = 'election-admin';
-        state.item = response;              // can go away?
-        state.newItem = null;
         refreshApp();
-        render.page(state);
       })
       .catch(err => {
-        if (err.code === 401) {           // update this for this function
-          state.backTo = state.view;
-          state.view = 'signup';
+        if (err.code === 401) {  
+          state.view = 'election-admin';
         }
         console.error(err);        
       });
@@ -135,13 +115,13 @@ var handle = {
     id = id.slice(2);
     return api.remove(id, state.token)
       .then(() => {
+        state.view = 'election-admin';})
+      .then(() => {
         refreshApp();
       })
       .catch(err => {
         if (err.code === 401) {
-          state.backTo = state.view;
-          state.view = 'signup';
-          render.page(state);
+          state.view = 'election-admin';
         }
         console.error(err);
       });
@@ -151,6 +131,7 @@ var handle = {
     const state = event.data;
     state.editingRaceId = null;
     state.view = 'election-admin';
+    render.clearRaceEdit(state);
     render.page(state);
   },
 
@@ -214,6 +195,7 @@ var handle = {
     state.view = 'login';
     render.page(state);
   },
+  
   viewSignup: function (event) {
     event.preventDefault();
     const state = event.data;
@@ -224,14 +206,43 @@ var handle = {
 };
 
 function countVotes(state) {
-  let candidateSelected;
-  let candidateObj;
-  Object.keys(state.races).forEach(raceKey => {
-    candidateSelected = $(`input[name=${raceKey}]:checked`).val();
-    state.races[raceKey].candidates.filter(obj => obj.name === candidateSelected)[0].votes+=1;
+  let promiseArr = [];
+  let searchObj = {};
+  state.races.forEach(race => {
+    searchObj['_id'] = race._id;
+    searchObj['candidates._id'] = $(`input[name=${race._id}]:checked`).attr('id');
+    promiseArr.push(api.vote(searchObj, state.token));
   });
+  Promise.all(promiseArr)
+    .then( () => {
+      state.view = 'public';
+      refreshApp();
+    });
 }
 
+function getRaceObject(state) {
+  let raceObject = {};
+  raceObject.type = $('#race-type').val();         
+  raceObject.city = $('#city').val();
+  raceObject.state = $('#state').val();
+  raceObject.district = $('#district').val();
+  raceObject.candidates = [];
+  for(let i = 1; i <= state.visibleCandidates; i++) {
+    if($('#candidate-' + i)) {
+      raceObject.candidates.push(
+        {candidate: {
+          name: $('#candidate-' + i).val(),
+          votes: 0}
+        }
+      );
+    }
+  }
+
+  render.clearRaceEdit(state);
+
+  return raceObject;
+
+}
 
 
 // search: function (event) {
