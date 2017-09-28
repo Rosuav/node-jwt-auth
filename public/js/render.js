@@ -103,7 +103,9 @@ var render = {
 
   raceAdd: function(state) {
     $('.race-input-candidate').hide();
+    $('.delete-candidate-btn').hide();
     $('#candidate-1').show();
+    $('#del-1').show();
     if(state.editingRaceId) {
       const currRace = state.races.filter(el => el._id === state.editingRaceId)[0];
       $('#edited-race-id').text(currRace._id);
@@ -116,12 +118,14 @@ var render = {
         i++;
         $('#candidate-' + i).show();
         $('#candidate-' + i).val(currRace.candidates[i-1].candidate.name);
+        $('#del-' + i).show();
       });      
     }
   },
 
   candidateAdd: function(state) {
     $('#candidate-' + state.visibleCandidates).show();
+    $('#del-' + state.visibleCandidates).show();
   },
 
   clearRaceEdit: function(state) {
