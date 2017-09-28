@@ -24,7 +24,7 @@ describe('Auth endpoints', function () {
   const hasVoted = false;
 
   before(function () {
-    return runServer();
+    return runServer('mongodb://localhost/jwt-auth-demo-test');
   });
 
   after(function () {

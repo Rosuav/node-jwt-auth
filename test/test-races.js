@@ -21,7 +21,7 @@ describe('/api/race', function() {
     {name: 'Robert', votes: 0}}];
 
   before(function () {
-    return runServer();
+    return runServer('mongodb://localhost/jwt-auth-demo-test');
   });
 
   after(function () {
