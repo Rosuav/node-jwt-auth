@@ -51,6 +51,11 @@ router.put('/:id', jsonParser, (req, res) => {
 });
 
 router.put('/votes/:id', jsonParser, (req, res) => {
+  if(!(req.params.id && req.body._id && req.params.id === req.body._id)) {
+    res.status(400).json({
+      error: 'Request path id and body id values must match'
+    });
+  }
   Race
     .update({_id: req.body._id, 'candidates._id': req.body['candidates._id']},
       {$inc: {'candidates.$.candidate.votes': 1}}
@@ -64,7 +69,7 @@ router.put('/votes/:id', jsonParser, (req, res) => {
 });
 
 router.post('/', jsonParser, jwtAuth, (req, res) => {
-
+  
   Race
     .create({
       type: req.body.type,
