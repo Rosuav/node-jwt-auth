@@ -47,7 +47,7 @@ var render = {
       race.city!=='n/a' ? raceLabel = `${race.city}, ${race.state}` : raceLabel = race.state;
       race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;
       racesHtml += `
-        <div class="race-block">
+        <div class="race-block col-4 col-6">
           <span class="race-label">${raceLabel}</span>`;
       race.candidates.forEach(candidate => {
         racesHtml += `
@@ -66,7 +66,7 @@ var render = {
       race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;
       racesHtml += `
         <div class="race-block">
-          <span class="race-label">${raceLabel}</span>
+          <span class="race-labelnodemon">${raceLabel}</span>
             <div>`;
       race.candidates.forEach(candidate => {
         racesHtml += ` 
