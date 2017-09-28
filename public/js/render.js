@@ -71,7 +71,7 @@ var render = {
       race.candidates.forEach(candidate => {
         racesHtml += ` 
           <label for="${candidate.candidate.name.replace(' ','-')}" class="radio-label">
-            <input type="radio" id="${candidate.candidate.name.replace(' ','-')}" name="${race._id}"
+            <input type="radio" id="${candidate._id}" name="${race._id}"
               value="${candidate.candidate.name}" />${candidate.candidate.name}
           </label>`;
       });
@@ -127,6 +127,7 @@ var render = {
   clearRaceEdit: function(state) {
     $('.race-input').val('');
     $('.race-input-candidate').val('');
+    $('#edited-race-id').text('');
     render.raceAdd(state);   
   }
 
