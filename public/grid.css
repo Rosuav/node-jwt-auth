@@ -1,12 +1,15 @@
 * {
     box-sizing: border-box;
   }
+
+  /* body {
+    max-width: 1000px;
+    margin: 0 auto;
+  } */
   
   .row {
     max-width: 1000px;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin: 0 auto;
+    margin: auto;
   }
   
   .row::before,
@@ -18,10 +21,17 @@
   .row::after {
     clear: both;
   }
+
+  .box {
+    margin-bottom: 5%;
+    margin-left: 1.04166666%;
+    margin-right: 1.04166666%;
+    /* height: 300px; */
+  }
   
   .col-4 {
     float: left;
-    width: 100%;
+    width: 97.91666668%
   }
   
   .col-12 {
@@ -30,19 +40,12 @@
   
   @media only screen and (min-width: 641px) {
     .col-4 {
-      width: 40%;
+      width: 47.91666668%;
     }
   }
 
   @media only screen and (min-width: 821px) {
     .col-6 {
-      width: 30%;
+      width: 30.91666668%;
     }
-  }
-  
-  .box {
-    margin-bottom: 5%;
-    margin-left: 1.04166666%;
-    margin-right: 1.04166666%;
-    height: 300px;
   }
