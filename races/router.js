@@ -13,7 +13,7 @@ const jsonParser = bodyParser.json();
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
-router.get('/', jsonParser, (req, res)  => {
+router.get('/all', jsonParser, (req, res)  => {
   console.log('get running');
   Race
     .find()
@@ -44,7 +44,7 @@ router.put('/:id', jsonParser, jwtAuth, (req, res) => {
   Race
     .findOneAndUpdate(
       {_id: req.params.id},
-      req.body
+      req.body        
     )
     .then(race => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Internal server error'}));

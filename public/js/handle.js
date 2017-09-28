@@ -206,8 +206,8 @@ var handle = {
 
 function countVotes(state) {
   let promiseArr = [];
-  let searchObj = {};
   state.races.forEach(race => {
+    let searchObj = {};
     searchObj['_id'] = race._id;
     searchObj['candidates._id'] = $(`input[name=${race._id}]:checked`).attr('id');
     promiseArr.push(api.vote(searchObj, state.token));
