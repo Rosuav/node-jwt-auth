@@ -17,7 +17,8 @@ describe('/api/race', function() {
   const city = 'Tysons Corner';
   const state = 'VA';
   const district = '11';
-  const candidates = [{name: 'Bob', votes: 0}];
+  const candidates = [{candidate: 
+    {name: 'Robert', votes: 0}}];
 
   before(function () {
     return runServer();
@@ -42,7 +43,6 @@ describe('/api/race', function() {
     return Race.remove({});
   });
 
-  //GET 
   describe('/api/races', function () {
     describe('GET', function () {
       it('Should return all existing races', function() {
@@ -87,13 +87,35 @@ describe('/api/race', function() {
             expect(res.body.candidates[0].candidate.name).to.deep.equal(race.candidates[0].candidate.name);
             expect(res.body.candidates[0].candidate.votes).to.deep.equal(race.candidates[0].candidate.votes);
           });
-
+      });
+    });
+    describe('POST', function() {
+      it('Should add a race', function () {
+        const newRace = {type: type, city: city, state: state, district: district, candidates: candidates};
+        return chai
+          .request(app)
+          .post('/api/races')
+          .send(newRace)
+          .then(function(res) {
+            expect(res).to.have.status(201);
+            expect(res).to.be.an('object');
+            expect(res.body).to.include.keys('type', 'city', 'district', 'state', 'candidates');
+            return Race
+              .findOne(res.body._id)
+              .then(function (race) {
+                expect(res.body.type).to.deep.equal(newRace.type);
+                expect(res.body.city).to.deep.equal(newRace.city);
+                expect(res.body.state).to.deep.equal(newRace.state);
+                expect(res.body.district).to.deep.equal(newRace.district);
+                expect(res.body.candidates[0].candidate.name).to.deep.equal(newRace.candidates[0].candidate.name);
+                expect(res.body.candidates[0].candidate.votes).to.deep.equal( newRace.candidates[0].candidate.votes);
+              });
+          });
       });
     });
   });
 });
 
-//GET by ID
 
 
 //POST
