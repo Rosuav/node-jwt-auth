@@ -39,7 +39,6 @@ var handle = {
 
   submitVotes: function(event) {
     const state = event.data;
-    state.view = 'public';
     countVotes(state);
   },
 
@@ -215,7 +214,7 @@ function countVotes(state) {
   });
   Promise.all(promiseArr)
     .then( () => {
-      state.view = 'public';
+      state.view = 'voted';
       refreshApp();
     });
 }

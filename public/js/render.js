@@ -27,7 +27,8 @@ var render = {
       public: render.electionResults,
       voting: render.electionBallot,
       'election-admin': render.raceAdminList,
-      'race-edit': render.raceAdd
+      'race-edit': render.raceAdd,
+      voted: render.electionResults
     };
 
     if(state.view in states) {
@@ -37,7 +38,15 @@ var render = {
     // show current panel
     //$('.view').show();          // to show all views for ts
     $('#' + state.view).show();
-
+    if (state.view === 'voted') {
+      $('#public').show();
+      $('.public-btn').hide();
+      $('#public-logout-btn').show();
+    }
+    else {
+      $('.public-btn').show();
+      $('#public-logout-btn').hide();
+    }
   },
 
   electionResults: function(state) {

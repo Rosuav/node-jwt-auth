@@ -55,7 +55,6 @@ describe('/api/race', function() {
             expect(res).to.have.status(200);
             expect(res.body.length).to.be.above(0);
             expect(res.body).to.be.an('array');
-            // expect(res.body[0]).to.include.keys('type', 'city', 'district', 'state', 'candidates');
             res.body.forEach(function(race) {
               expect(race).to.be.an('object');
               expect(race).to.include.keys('type', 'city', 'district', 'state', 'candidates');
@@ -100,7 +99,6 @@ describe('/api/race', function() {
           },
           JWT_SECRET,
           {
-            // algorithm: 'HS256',
             subject: 'bmalin',
             expiresIn: '7d'
           }
@@ -140,7 +138,6 @@ describe('/api/race', function() {
               },
               JWT_SECRET,
               {
-                // algorithm: 'HS256',
                 subject: 'bmalin',
                 expiresIn: '7d'
               }
@@ -170,7 +167,6 @@ describe('/api/race', function() {
               },
               JWT_SECRET,
               {
-                // algorithm: 'HS256',
                 subject: 'bmalin',
                 expiresIn: '7d'
               }
@@ -183,18 +179,61 @@ describe('/api/race', function() {
           })
           .then(function(res) {
             expect(res).to.have.status(204);
+          })
+          .then(function() {
+            return chai
+              .request(app)
+              .get(`/api/races/${race._id}`);
+          })
+          .then(function (res) {
+            expect(res).to.have.status(200);
+            expect(res).to.be.an('object');
+            expect(res.body.type).to.deep.equal(newRace.type);
+            expect(res.body.city).to.deep.equal(newRace.city);
+            expect(res.body.candidates[0].candidate.name).to.deep.equal(newRace.candidates[0].candidate.name);
+            expect(res.body.candidates[0].candidate.votes).to.deep.equal(0);
+          });
+      });
+      it('Should add one vote', function () {
+        let race;
+        return Race
+          .findOne()
+          .then(function (_race) {
+            race = _race;
+            let raceId = race._id;
+            let candidateId = race.candidates[0]._id;
+            let searchString = {'_id': raceId, 'candidates._id': candidateId};
+            const token = jwt.sign(
+              {
+                user: 'bmalin'
+              },
+              JWT_SECRET,
+              {
+                subject: 'bmalin',
+                expiresIn: '7d'
+              }
+            );
+            return chai
+              .request(app)
+              .put(`/api/races/votes/${raceId}`)
+              .send(searchString)
+              .set('authorization', `Bearer ${token}`);
+          })
+          .then(function(res) {
+            expect(res).to.have.status(204);
+          })
+          .then(function() {
+            return chai
+              .request(app)
+              .get(`/api/races/${race._id}`);
+          })
+          .then(function (res) {
+            expect(res).to.have.status(200);
+            expect(res).to.be.an('object');
+            expect(res.body.candidates[0].candidate.name).to.deep.equal(race.candidates[0].candidate.name);
+            expect(res.body.candidates[0].candidate.votes).to.deep.equal(1);
           });
       });
     });
   });
 });
-
-
-//Recording the votes (PUT)
-
-
-//Update a race (PUT)
-
-
-//DELETE a race
-

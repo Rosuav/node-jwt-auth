@@ -38,7 +38,7 @@ router.get('/:id', jsonParser, (req, res)  => {
     });
 });
 
-router.put('/:id', jsonParser, (req, res) => {
+router.put('/:id', jsonParser, jwtAuth, (req, res) => {
   console.log('put call received');
   console.log(req.body);
   Race
@@ -50,7 +50,7 @@ router.put('/:id', jsonParser, (req, res) => {
     .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
-router.put('/votes/:id', jsonParser, (req, res) => {
+router.put('/votes/:id', jsonParser, jwtAuth, (req, res) => {
   if(!(req.params.id && req.body._id && req.params.id === req.body._id)) {
     res.status(400).json({
       error: 'Request path id and body id values must match'
@@ -85,7 +85,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', jwtAuth, (req, res) => {
   
   Race
     .findByIdAndRemove(req.params.id)
