@@ -101,4 +101,6 @@ input[type="radio"] {
   float: left;
   position: absolute;
   margin-left: -20px;
+  /* display: none;
+  margin: auto; */
 }
