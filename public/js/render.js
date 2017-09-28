@@ -52,15 +52,20 @@ var render = {
   electionResults: function(state) {
     let racesHtml = '';
     let raceLabel = '';
+    let voteSum;
     state.races.forEach(race => {
       race.city!=='n/a' ? raceLabel = `${race.city}, ${race.state}` : raceLabel = race.state;
       race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;
       racesHtml += ` 
       <div class="race-block col-4 col-6 box">
           <span class="race-label">${raceLabel}</span>`;
+      voteSum = race.candidates.reduce((sum, candidate) => {
+        return sum.candidate.votes + candidate.candidate.votes;  
+      });
       race.candidates.forEach(candidate => {
         racesHtml += `
-          <li>${candidate.candidate.name} - ${candidate.candidate.votes}</li>`;
+          <li>${candidate.candidate.name} - ${candidate.candidate.votes.toLocaleString()} - 
+              ${(candidate.candidate.votes/voteSum*100).toFixed(1)}%</li>`;
       });
       racesHtml += '</div>';
     });
