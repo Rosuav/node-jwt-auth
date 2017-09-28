@@ -91,7 +91,7 @@ router.delete('/:id', (req, res) => {
     .findByIdAndRemove(req.params.id)
     .then(() => {
       console.log(`Deleted race with id = ${req.params.id}`);
-      req.status(204).end();
+      res.status(204).end();
     });
 });
 

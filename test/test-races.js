@@ -4,9 +4,11 @@ global.DATABASE_URL = 'mongodb://localhost/jwt-auth-demo-test';
 process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const jwt = require('jsonwebtoken');
 
 const { app, runServer, closeServer } = require('../server');
 const { Race } = require('../races');
+const { JWT_SECRET } = require('../config');
 
 const expect = chai.expect;
 
@@ -92,9 +94,21 @@ describe('/api/race', function() {
     describe('POST', function() {
       it('Should add a race', function () {
         const newRace = {type: type, city: city, state: state, district: district, candidates: candidates};
+        const token = jwt.sign(
+          {
+            user: 'bmalin'
+          },
+          JWT_SECRET,
+          {
+            // algorithm: 'HS256',
+            subject: 'bmalin',
+            expiresIn: '7d'
+          }
+        );
         return chai
           .request(app)
           .post('/api/races')
+          .set('authorization', `Bearer ${token}`)
           .send(newRace)
           .then(function(res) {
             expect(res).to.have.status(201);
@@ -113,12 +127,67 @@ describe('/api/race', function() {
           });
       });
     });
+    describe('DELETE', function () {
+      it('Should delete a race', function () {
+        let race;
+        return Race
+          .findOne()
+          .then(function (_race) {
+            race = _race;
+            const token = jwt.sign(
+              {
+                user: 'bmalin'
+              },
+              JWT_SECRET,
+              {
+                // algorithm: 'HS256',
+                subject: 'bmalin',
+                expiresIn: '7d'
+              }
+            );
+            return chai
+              .request(app)
+              .delete(`/api/races/${race.id}`)
+              .set('authorization', `Bearer ${token}`);
+          })
+          .then(function(res) {
+            expect(res).to.have.status(204);
+          });
+      });
+    });
+    describe('PUT', function () {
+      it('Should update a race', function () {
+        const newRace = {type: type, city: city, state: state, district: district, candidates: candidates};
+        let race;
+        return Race
+          .findOne()
+          .then(function (_race) {
+            race = _race;
+            newRace.id = race._id;
+            const token = jwt.sign(
+              {
+                user: 'bmalin'
+              },
+              JWT_SECRET,
+              {
+                // algorithm: 'HS256',
+                subject: 'bmalin',
+                expiresIn: '7d'
+              }
+            );
+            return chai
+              .request(app)
+              .put(`/api/races/${race.id}`)
+              .send(newRace)
+              .set('authorization', `Bearer ${token}`);
+          })
+          .then(function(res) {
+            expect(res).to.have.status(204);
+          });
+      });
+    });
   });
 });
-
-// this is a change
-
-//POST
 
 
 //Recording the votes (PUT)
