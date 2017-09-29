@@ -24,6 +24,22 @@ router.get('/', jsonParser, (req, res)  => {
       console.error(err);
       res.status(500).json({error: 'Search failed'});
     });
+} );
+
+router.get('/local/', jsonParser, (req, res)  => {
+  Race
+    .find({ $or:[
+      {state: req.query.state, city: 'n/a', district: 'n/a'},
+      {state: req.query.state, city: req.query.city, district: 'n/a'},
+      {state: req.query.state, city: req.query.city, district: req.query.district}
+    ]})
+    .then(races => {
+      res.json(races);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({error: 'Search failed'});
+    });
 });
 
 router.get('/:id', jsonParser, (req, res)  => {

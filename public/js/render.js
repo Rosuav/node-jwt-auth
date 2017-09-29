@@ -59,15 +59,20 @@ var render = {
       racesHtml += ` 
       <div class="race-block col-4 col-6 box">
           <span class="race-label">${raceLabel}</span>`;
-      voteSum = race.candidates.reduce((sum, candidate) => {
-        console.log(sum.candidate.votes);
-        console.log(candidate.candidate.votes);
-        return sum.candidate.votes + candidate.candidate.votes;  
+      voteSum = 0;
+      race.candidates.forEach(candidate => {
+        voteSum += candidate.candidate.votes;
       });
       race.candidates.forEach(candidate => {
-        racesHtml += `
-          <li>${candidate.candidate.name} - ${candidate.candidate.votes.toLocaleString()} - 
-              ${(candidate.candidate.votes/voteSum*100).toFixed(1)}%</li>`;
+        if(voteSum > 0) {
+          racesHtml += `
+            <li>${candidate.candidate.name} - ${candidate.candidate.votes.toLocaleString()} - 
+                ${(candidate.candidate.votes/voteSum*100).toFixed(1)}%</li>`;
+        }
+        else {
+          racesHtml += `
+          <li>${candidate.candidate.name} - ${candidate.candidate.votes.toLocaleString()}</li>`;
+        }
       });
       racesHtml += '</div>';
     });
@@ -144,6 +149,17 @@ var render = {
     $('#del-' + state.visibleCandidates).show();
   },
 
+  candidateDel: function(state, candidateArr) {
+    $('.race-input-candidate').hide();
+    $('.delete-candidate-btn').hide();
+    console.log('render starting del');
+    for (let i = 0; i < candidateArr.length; i++) {
+      $('#candidate-' + (i+1)).show();
+      $('#del-' + (i+1)).show();
+      $('#candidate-' + (i+1)).text(candidateArr);
+    }
+  },
+
   clearRaceEdit: function(state) {
     $('.race-input').val('');
     $('.race-input-candidate').val('');
@@ -152,7 +168,6 @@ var render = {
   }
 
 };    // end of render()
-
 
 
 

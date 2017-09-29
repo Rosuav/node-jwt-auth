@@ -42,6 +42,12 @@ var handle = {
     countVotes(state);
   },
 
+  logoutAfterVote: function(event) {
+    const state = event.data;
+    state.view = 'public';
+    render.page(state);
+  },
+
   electionAdmin: function(event) {
     const state = event.data;
     console.log(event.target.id);
@@ -59,6 +65,7 @@ var handle = {
     }
     else if(event.target.id.charAt(0) === 'e'){
       state.editingRaceId = event.target.id.slice(2);
+      state.races.filter( item => item._id = state.editingRaceId);
       state.view = 'race-edit';
       render.page(state);
     }
@@ -134,6 +141,22 @@ var handle = {
     render.page(state);
   },
 
+  deleteCandidate: function(event) {
+    const state = event.data;
+    let candidateArr = [];
+    const deletedCandidate = Number(event.target.id.charAt(-1));
+    console.log('handler start for loop');
+    for (let i = 1; i <= state.visibleCandidates; i++) {
+      if (i !== deletedCandidate) { 
+        console.log($('#candidate-'+ i).text());
+        candidateArr.push($('#candidate-'+ i).text());
+      }
+      state.visibleCandidates--;
+    }
+    console.log(candidateArr);
+  },
+  
+
   signup: function(event) {
     event.preventDefault();
     const state = event.data;
@@ -175,9 +198,15 @@ var handle = {
           var base64Url = token.split('.')[1];
           var base64 = base64Url.replace('-', '+').replace('_', '/');
           return JSON.parse(window.atob(base64));}
-        parseJwt(response.authToken).user.adminUser ? state.view = 'election-admin' : state.view = 'voting';
+        console.log(parseJwt(response.authToken));
+        
+        const tokenObj = parseJwt(response.authToken).user;
+        const{username, city, district, hasVoted, adminUser} = tokenObj;
+        state.userInfo = {username, city, district, hasVoted, adminUser};
+        state.userInfo['state'] = tokenObj.state; 
+        state.userInfo.adminUser ? state.view = 'election-admin' : 
+          state.userInfo.hasVoted ? state.view = 'voted' : state.view = 'voting';
         refreshApp();
-        render.page(state);
       })
       .catch(err => {
         if (err.reason === 'ValidationError') {
@@ -214,6 +243,11 @@ function countVotes(state) {
   });
   Promise.all(promiseArr)
     .then( () => {
+      let searchObj = {};
+      searchObj.username = state.userInfo.username;
+      return api.updateVoted(searchObj, state.token);
+    })
+    .then( () => {
       state.view = 'voted';
       refreshApp();
     });
@@ -238,9 +272,7 @@ function getRaceObject(state) {
   }
 
   render.clearRaceEdit(state);
-
   return raceObject;
-
 }
 
 

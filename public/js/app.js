@@ -26,7 +26,7 @@ var STORE;
 jQuery(function ($) {
 
   STORE = {
-    view: 'public', // signup | login | public | voting | election-admin | race-edit 
+    view: 'public', // signup | login | public | voting | voted | election-admin | race-edit 
     backTo: null,
     query: {},      // search query values
     visibleCandidates: 0,   // candidates displayed on add/edit race page
@@ -34,18 +34,21 @@ jQuery(function ($) {
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
+    userInfo: {adminUser: 'start'},
     races: []
   };
 
   // Setup all the event listeners, passing STATE and event to handlers
   $('#public-login-btn').on('click', STORE, handle.tempLogin);
   $('#public-signup-btn').on('click', STORE, handle.tempSignup);
+  $('#public-logout-btn').on('click', STORE, handle.logoutAfterVote);
   $('.public-cancel').on('click', STORE, handle.publicCancel);
   $('#submit-votes-btn').on('click', STORE, handle.submitVotes);
   $('#election-admin').on('click', 'button', STORE, handle.electionAdmin);
   $('#new-race-post-btn').on('click', STORE, handle.editRacePost);  
   $('#new-race-cancel-btn').on('click', STORE, handle.cancelNewRace);  
   $('#add-candidate-btn').on('click', STORE, handle.newCandidate);
+  $('.delete-candidate-btn').on('click', STORE, handle.deleteCandidate);
 
   $('#signup').on('submit', STORE, handle.signup);
   $('#login').on('submit', STORE, handle.login);
@@ -59,14 +62,27 @@ jQuery(function ($) {
 
 function refreshApp() {
   console.log('refresh running');
-  return api.search()
-    .then(response => {
-      STORE.races = response;
-    })
-    .then( () => {
-      render.page(STORE);
-    });
+  if(STORE.userInfo.adminUser === false) {
+    return api.searchLoc(STORE)
+      .then(response => {
+        STORE.races = response;
+      })
+      .then( () => {
+        render.page(STORE);
+      });  
+  }
+  else {
+    return api.search()
+      .then(response => {
+        STORE.races = response;
+      })
+      .then( () => {
+        render.page(STORE);
+      });
+  }
 }
+
+
 
 // 
 // $('#create').on('submit', STORE, handle.create);

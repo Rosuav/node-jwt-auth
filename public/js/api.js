@@ -13,6 +13,7 @@
 
 const RACES_URL = '/api/races/';
 const VOTE_URL = '/api/races/votes/';
+const LOCAL_URL = '/api/races/local/';
 const USERS_URL = '/api/users/';
 const LOGIN_URL = '/api/auth/login/';
 
@@ -54,9 +55,24 @@ var api = {
       .then(res => res.json());
   },
   
+  searchLoc: function (state) {
+    let query = {};
+    query['state'] = state.userInfo.state;
+    query.city = state.userInfo.city;
+    query.district=state.userInfo.district;
+    const url = buildUrl(LOCAL_URL, query);
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      },
+    })
+      .then(normalizeResponseErrors)
+      .then(res => res.json());
+  },
+
   search: function (query) {
     const url = buildUrl(RACES_URL, query);
-
     return fetch(url, {
       method: 'GET',
       headers: {
@@ -126,6 +142,21 @@ var api = {
     //.then(res => res.json());
   },
   
+  updateVoted: function (document, token) {
+    console.log('updateVoted running');
+    const url = buildUrl(`${USERS_URL}${document.username}`);
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: document ? JSON.stringify(document) : null
+    }).then(normalizeResponseErrors);
+    //.then(res => res.json());
+  },
+
   remove: function (id, token) {
     const url = buildUrl(`${RACES_URL}${id}`);
     return fetch(url, {
