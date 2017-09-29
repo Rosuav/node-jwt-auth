@@ -15,6 +15,7 @@ const RACES_URL = '/api/races/';
 const VOTE_URL = '/api/races/votes/';
 const LOCAL_URL = '/api/races/local/';
 const USERS_URL = '/api/users/';
+const VOTED_URL = '/api/users/setVote/';
 const LOGIN_URL = '/api/auth/login/';
 
 var api = {
@@ -144,7 +145,7 @@ var api = {
   
   updateVoted: function (document, token) {
     console.log('updateVoted running');
-    const url = buildUrl(`${USERS_URL}${document.username}`);
+    const url = buildUrl(`${VOTED_URL}${document.username}`);
     return fetch(url, {
       method: 'PUT',
       headers: {

@@ -103,7 +103,7 @@ router.post('/', jsonParser, (req, res) => {
     });
 }),
 
-router.put('/:username', jsonParser, (req, res) => {    
+router.put('/setVote/:username', jsonParser, (req, res) => {    
   User
     .findOneAndUpdate(
       {username: req.params.username},
