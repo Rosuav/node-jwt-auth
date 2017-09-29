@@ -147,16 +147,18 @@ var render = {
   candidateAdd: function(state) {
     $('#candidate-' + state.visibleCandidates).show();
     $('#del-' + state.visibleCandidates).show();
-  },
+  },  
 
   candidateDel: function(state, candidateArr) {
+    console.log(candidateArr);
     $('.race-input-candidate').hide();
     $('.delete-candidate-btn').hide();
+    $('.race-input-candidate').val('');
     console.log('render starting del');
     for (let i = 0; i < candidateArr.length; i++) {
       $('#candidate-' + (i+1)).show();
       $('#del-' + (i+1)).show();
-      $('#candidate-' + (i+1)).text(candidateArr);
+      $('#candidate-' + (i+1)).val(candidateArr);
     }
   },
 

@@ -50,7 +50,7 @@ var handle = {
 
   electionAdmin: function(event) {
     const state = event.data;
-    console.log(event.target.id);
+    console.log(this.id);
     if(event.target.id === 'go-new-race-btn'){
       state.visibleCandidates = 1;
       state.view = 'race-edit';
@@ -65,11 +65,12 @@ var handle = {
     }
     else if(event.target.id.charAt(0) === 'e'){
       state.editingRaceId = event.target.id.slice(2);
-      state.races.filter( item => item._id = state.editingRaceId);
+      console.log(state.editingRaceId);
+      state.visibleCandidates = state.races.filter(el => el._id === state.editingRaceId)[0].candidates.length;
+      // state.races.filter( item => item._id = state.editingRaceId);
       state.view = 'race-edit';
       render.page(state);
     }
-    refreshApp();
   },
 
   newCandidate: function(event) {
@@ -144,16 +145,19 @@ var handle = {
   deleteCandidate: function(event) {
     const state = event.data;
     let candidateArr = [];
-    const deletedCandidate = Number(event.target.id.charAt(-1));
+    const deletedCandidate = Number((event.target.id).charAt(event.target.id.length-1));
+    console.log(deletedCandidate);
+    console.log(state.visibleCandidates);
     console.log('handler start for loop');
     for (let i = 1; i <= state.visibleCandidates; i++) {
       if (i !== deletedCandidate) { 
-        console.log($('#candidate-'+ i).text());
-        candidateArr.push($('#candidate-'+ i).text());
+        console.log($('#candidate-'+ i).val());
+        candidateArr.push($('#candidate-'+ i).val());
       }
       state.visibleCandidates--;
     }
     console.log(candidateArr);
+    render.candidateDel(state, candidateArr);
   },
   
 

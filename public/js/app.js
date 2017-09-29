@@ -83,7 +83,6 @@ function refreshApp() {
 }
 
 
-
 // 
 // $('#create').on('submit', STORE, handle.create);
 // $('#search').on('submit', STORE, handle.search);
