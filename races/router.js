@@ -14,7 +14,7 @@ const router = express.Router();
 const jsonParser = bodyParser.json();
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-
+// Pulls all of the existing races from the API
 router.get('/', jsonParser, (req, res)  => {
   Race
     .find()
@@ -27,6 +27,7 @@ router.get('/', jsonParser, (req, res)  => {
     });
 } );
 
+// Pulls location-specific races from the API - based on user's location
 router.get('/local/', jsonParser, (req, res)  => {
   Race
     .find({ $or:[
@@ -43,6 +44,7 @@ router.get('/local/', jsonParser, (req, res)  => {
     });
 });
 
+// Pulls a specified race from the API
 router.get('/:id', jsonParser, (req, res)  => {
   Race
     .findById(req.params.id)
@@ -55,6 +57,7 @@ router.get('/:id', jsonParser, (req, res)  => {
     });
 });
 
+// Updates a specified race in the API
 router.put('/:id', jsonParser, jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
@@ -70,6 +73,7 @@ router.put('/:id', jsonParser, jwtAuth, (req, res) => {
     .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
+// Increases a race's candidate's vote count by 1
 router.put('/votes/:id', jsonParser, jwtAuth, (req, res) => {
   if(!(req.params.id && req.body._id && req.params.id === req.body._id)) {
     res.status(400).json({
@@ -88,6 +92,7 @@ router.put('/votes/:id', jsonParser, jwtAuth, (req, res) => {
     });
 });
 
+// Adds a race to the API
 router.post('/', jsonParser, jwtAuth, (req, res) => {
   const requiredFields = ['type', 'city', 'state', 'district'];
   const missingField = requiredFields.find(field => !(field in req.body));
@@ -115,6 +120,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
     });
 });
 
+// Deletes a specified race from the API
 router.delete('/:id', jwtAuth, (req, res) => {
   
   Race

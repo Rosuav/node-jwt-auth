@@ -34,9 +34,9 @@ var handle = {
     refreshApp();
   },
 
+  // Handles the actions on the admin page
   electionAdmin: function(event) {
     const state = event.data;
-    console.log(this.id);
     if(event.target.id === 'go-new-race-btn'){
       state.visibleCandidates = 1;
       state.view = 'race-edit';
@@ -51,9 +51,7 @@ var handle = {
     }
     else if(event.target.id.charAt(0) === 'e'){
       state.editingRaceId = event.target.id.slice(2);
-      console.log(state.editingRaceId);
       state.visibleCandidates = state.races.filter(el => el._id === state.editingRaceId)[0].candidates.length;
-      // state.races.filter( item => item._id = state.editingRaceId);
       state.view = 'race-edit';
       render.page(state);
     }
@@ -69,9 +67,7 @@ var handle = {
 
   editRacePost: function(event) {
     const state = event.data;
-    // console.log('get race Obj');
     let raceObj = getRaceObject(state);
-    // console.log('call follow-on handler', state.editingRaceId);
     state.editingRaceId ? handle.updateRace(state, raceObj) : handle.postNewRace(state, raceObj);
   },
 
@@ -219,6 +215,7 @@ var handle = {
 
 };
 
+// Finds selected candidate, who will receive the vote upon submission
 function countVotes(state) {
   let promiseArr = [];
   state.races.forEach(race => {
@@ -239,6 +236,7 @@ function countVotes(state) {
     });
 }
 
+// Returns the race data that will be updated
 function getRaceObject(state) {
   let raceObject = {};
   raceObject.type = $('#race-type').val();         

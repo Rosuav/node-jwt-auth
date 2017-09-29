@@ -100,6 +100,7 @@ router.post('/', jsonParser, (req, res) => {
     });
 }),
 
+// Updates a user's "hasVoted" status to "true"
 router.put('/setVote/:username', jsonParser, (req, res) => {    
   User
     .findOneAndUpdate(

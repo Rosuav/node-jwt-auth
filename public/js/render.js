@@ -1,10 +1,6 @@
 /* global $ */
 'use strict';
 
-function fname() {}
-
-const myExpF = fname;
-
 var render = {
   page: function(state) {
     $('.view').hide();
@@ -23,7 +19,6 @@ var render = {
     }
 
     // show current panel
-    //$('.view').show();          // to show all views for ts
     $('#' + state.view).show();
     if (state.view === 'voted') {
       $('#public').show();
@@ -36,6 +31,7 @@ var render = {
     }
   },
 
+  // Render election results to the page
   electionResults: function(state) {
     let racesHtml = '';
     let raceLabel = '';
@@ -66,6 +62,7 @@ var render = {
     $('.row').html(racesHtml);
   },
 
+  // Render voting ballots to the page
   electionBallot: function(state) {
     let racesHtml = '';
     let raceLabel = '';
@@ -88,6 +85,7 @@ var render = {
     $('.row').html(racesHtml);
   },
 
+  // Render the editable/deletable races to the admin page
   raceAdminList: function(state) {
     let racesHtml = '';
     let raceLabel = '';
@@ -109,6 +107,7 @@ var render = {
     $('.row').html(racesHtml);
   },
 
+  // Adds a single race to the admin page
   raceAdd: function(state) {
     $('.race-input-candidate').hide();
     $('.delete-candidate-btn').hide();
@@ -131,11 +130,13 @@ var render = {
     }
   },
 
+  // Adds a candidate box to the add race form
   candidateAdd: function(state) {
     $('#candidate-' + state.visibleCandidates).show();
     $('#del-' + state.visibleCandidates).show();
   },  
 
+  // Deletes a candidate box on the add race form
   candidateDel: function(state, candidateArr) {
     $('.race-input-candidate').hide();
     $('.delete-candidate-btn').hide();
@@ -147,6 +148,7 @@ var render = {
     }
   },
 
+  // Clears out the add race form
   clearRaceEdit: function(state) {
     $('.race-input').val('');
     $('.race-input-candidate').val('');
@@ -155,38 +157,3 @@ var render = {
   }
 
 }; 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// results: function (state) {
-//   const listItems = state.list.map((item) => {
-//     return `<li id="${item.id}">
-//               <a href="" class="detail">Name: ${item.name}</a>
-//               <a href="#" class="remove">X</a>
-//             </li>`;
-//   });
-//   $('#result').empty().append('<ul>').find('ul').append(listItems);
-// },
-// edit: function (state) {
-//   const el = $('#edit');
-//   const item = state.item;
-//   el.find('[name=name]').val(item.name);
-// },
-// detail: function (state) {
-//   const el = $('#detail');
-//   const item = state.item;
-//   el.find('.name').text(item.name);
-// }

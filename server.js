@@ -57,8 +57,6 @@ function runServer(db_url=DATABASE_URL) {
   });
 }
 
-// added this
-
 function closeServer() {
   return mongoose.disconnect().then(() => {
     return new Promise((resolve, reject) => {

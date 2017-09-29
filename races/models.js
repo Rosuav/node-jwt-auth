@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
+// Schema for election race
 const RaceSchema = mongoose.Schema({
   type: {
     type: String,
@@ -36,11 +37,13 @@ const RaceSchema = mongoose.Schema({
   }]
 });
 
+// Combines the state and district into a string
 RaceSchema.virtual('raceLabel')
   .get(function() {
     return `${this.state} - Dist ${this.district}`;
   });
 
+// Returns the created race with a specific format
 RaceSchema.methods.apiRepr = function () {
   return {
     id: this._id,
