@@ -93,7 +93,7 @@ describe('/api/race', function() {
           .get('/api/races/local/?state=VA&city=Staunton&district=11')
           .then(function (res) {
             expect(res).to.have.status(200);
-            expect(res.body.length).to.be.null;
+            expect(res.body.length).to.equal(0);
           })
           .catch(err => {
             if (err instanceof chai.AssertionError) {
@@ -107,7 +107,7 @@ describe('/api/race', function() {
           .get('/api/races/local/?state=VA&city=Virginia&district=11')
           .then(function (res) {
             expect(res).to.have.status(200);
-            expect(res.body.length).to.be.null;
+            expect(res.body.length).to.equal(0);
           })
           .catch(err => {
             if (err instanceof chai.AssertionError) {
@@ -121,7 +121,7 @@ describe('/api/race', function() {
           .get('/api/races/local/?state=VA&city=McLean&district=99')
           .then(function (res) {
             expect(res).to.have.status(200);
-            expect(res.body.length).to.be.null;
+            expect(res.body.length).to.equal(0);
           })
           .catch(err => {
             if (err instanceof chai.AssertionError) {
