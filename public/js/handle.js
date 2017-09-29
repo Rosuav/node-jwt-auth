@@ -17,8 +17,9 @@ var handle = {
 
   publicCancel: function(event) {
     const state = event.data;
+    state.userInfo = {adminUser: 'start'};
     state.view = 'public';
-    render.page(state);
+    refreshApp();
   },
 
   submitVotes: function(event) {
