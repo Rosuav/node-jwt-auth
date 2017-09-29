@@ -21,9 +21,11 @@
 			<!-- results html here -->
 			</div>	
 		</div>
-		<button type="button" id="public-login-btn" class="gen-btn public-btn">Login</button>
-		<button type="button" id="public-signup-btn" class="gen-btn public-btn">Sign Up</button>
-		<button type="button" id="public-logout-btn" class="gen-btn">Logout</button>
+		<div class="button-container">
+			<button type="button" id="public-login-btn" class="gen-btn public-btn">Login</button>
+			<button type="button" id="public-signup-btn" class="gen-btn public-btn">Sign Up</button>
+			<button type="button" id="public-logout-btn" class="gen-btn">Logout</button>
+		</div>
 	</div>
 
 	<div id="voting" class="view">
@@ -31,8 +33,10 @@
 		<div id="ballot-list">
 			<!-- ballot html here -->
 		</div>
-		<button type="button" id="submit-votes-btn" class="gen-btn">Submit</button>
-		<button type="button" id="submit-votes-cancel" class="gen-btn public-cancel">Cancel</button>
+		<div class="button-container">
+			<button type="button" id="submit-votes-btn" class="gen-btn">Submit</button>
+			<button type="button" id="submit-votes-cancel" class="gen-btn public-cancel">Cancel</button>
+		</div>
 	</div>
 
 	<div id="election-admin" class="view">
@@ -66,8 +70,10 @@
 			<input type="text" id="candidate-7" class="race-input-candidate"><button type="button" id="del-7" class="delete-candidate-btn small-button">X</button><br>
 			<input type="text" id="candidate-8" class="race-input-candidate"><button type="button" id="del-8" class="delete-candidate-btn small-button">X</button><br>
 			<input type="text" id="candidate-9" class="race-input-candidate"><button type="button" id="del-9" class="delete-candidate-btn small-button">X</button><br>
-			<button type="button" id="new-race-post-btn" class="gen-btn">Submit</button>
-			<button type="button" id="new-race-cancel-btn" class="gen-btn">Cancel</button>
+			<div class="button-container">
+				<button type="button" id="new-race-post-btn" class="gen-btn">Submit</button>
+				<button type="button" id="new-race-cancel-btn" class="gen-btn">Cancel</button>
+			</div>
 		</form>
 	</div>
 
@@ -95,7 +101,9 @@
 				<label for="signup-admin">Administrator</label>
 				<input type="checkbox" id="signup-admin" name="adminUser" value="false">
 			</div>
-			<button type="submit">Signup</button>
+			<div class="button-container">
+				<button type="submit">Signup</button>
+			</div>
 			Already have an account? <a href="" class="viewLogin">Login</a>
 		</fieldset>
 	</form>
@@ -111,7 +119,9 @@
 				<label for="password">Password</label>
 				<input type="password" id="password" name="password">
 			</div>
-			<button type="submit">Login</button>
+			<div class="button-container">
+				<button type="submit">Login</button>
+			</div>
 			Don't have an account? <a href="" class="viewSignup">Signup</a>
 		</fieldset>
 	</form>
