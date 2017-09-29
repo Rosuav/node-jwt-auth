@@ -67,6 +67,68 @@ describe('/api/race', function() {
             }
           });
       });
+      it('Should return only races from the user locale', function() {
+        return chai
+          .request(app)
+          .get('/api/races/local/?state=VA&city=McLean&district=11')
+          .then(function (res) {
+            expect(res).to.have.status(200);
+            expect(res.body.length).to.be.above(0);
+            expect(res.body).to.be.an('array');
+            res.body.forEach(function(race) {
+              expect(race).to.be.an('object');
+              expect(race).to.include.keys('type', 'city', 'district', 'state', 'candidates');
+            });
+            expect(res).to.be.json;
+          })
+          .catch(err => {
+            if (err instanceof chai.AssertionError) {
+              throw err;
+            }
+          });
+      });
+      it('Should not return races where the race state doesnt match the user state', function() {
+        return chai
+          .request(app)
+          .get('/api/races/local/?state=VA&city=Staunton&district=11')
+          .then(function (res) {
+            expect(res).to.have.status(200);
+            expect(res.body.length).to.be.null;
+          })
+          .catch(err => {
+            if (err instanceof chai.AssertionError) {
+              throw err;
+            }
+          });
+      });
+      it('Should not return races where the race city doesnt match the user city', function() {
+        return chai
+          .request(app)
+          .get('/api/races/local/?state=VA&city=Virginia&district=11')
+          .then(function (res) {
+            expect(res).to.have.status(200);
+            expect(res.body.length).to.be.null;
+          })
+          .catch(err => {
+            if (err instanceof chai.AssertionError) {
+              throw err;
+            }
+          });
+      });
+      it('Should not return races where the race district doesnt match the user district', function() {
+        return chai
+          .request(app)
+          .get('/api/races/local/?state=VA&city=McLean&district=99')
+          .then(function (res) {
+            expect(res).to.have.status(200);
+            expect(res.body.length).to.be.null;
+          })
+          .catch(err => {
+            if (err instanceof chai.AssertionError) {
+              throw err;
+            }
+          });
+      });
       it('Should return the requested ID', function () {
         let race;
         return Race
