@@ -73,7 +73,7 @@ var render = {
       race.city!=='n/a' ? raceLabel = `${race.city}, ${race.state}` : raceLabel = race.state;
       race.district!=='n/a' ? raceLabel += ` - dist ${race.district} ${race.type}` : raceLabel +=` ${race.type}`;
       racesHtml += `
-        <div class="race-block">
+        <div class="race-block col-4 col-6 box">
           <span class="race-label">${raceLabel}</span>
             <div>`;
       race.candidates.forEach(candidate => {
@@ -85,7 +85,7 @@ var render = {
       });
       racesHtml += '</div></div>';
     });
-    $('#ballot-list').html(racesHtml);
+    $('.row').html(racesHtml);
   },
 
   raceAdminList: function(state) {
@@ -106,7 +106,7 @@ var render = {
           <button type="button" id="d-${race._id}" class="small-button race-delete-btn">Delete</button>
         </div>`;
     });
-    $('#election-admin-list').html(racesHtml);
+    $('.row').html(racesHtml);
   },
 
   raceAdd: function(state) {
