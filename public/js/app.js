@@ -15,7 +15,7 @@ jQuery(function ($) {
     list: null,     // search result - array of objects (documents)
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
-    userInfo: {adminUser: 'start'},
+    userInfo: {adminUser: 'start'}, // holds current user information
     races: []
   };
 
@@ -41,6 +41,7 @@ jQuery(function ($) {
   
 });
 
+// Gets the current data from the API and renders it given a certain page state
 function refreshApp() {
   if(STORE.userInfo.adminUser === false) {
     return api.searchLoc(STORE)

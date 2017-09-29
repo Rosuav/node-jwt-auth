@@ -45,6 +45,7 @@ var api = {
       .then(res => res.json());
   },
   
+  // Searches for races by the user's location
   searchLoc: function (state) {
     let query = {};
     query['state'] = state.userInfo.state;
@@ -61,6 +62,7 @@ var api = {
       .then(res => res.json());
   },
 
+  // Searches for all existing races
   search: function (query) {
     const url = buildUrl(RACES_URL, query);
     return fetch(url, {
@@ -72,9 +74,9 @@ var api = {
       .then(res => res.json());
   },
   
+  // Finds a specific race
   details: function (id) {
     const url = buildUrl(`${RACES_URL}${id}`);
-
     return fetch(url, {
       method: 'GET',
       headers: {
@@ -84,6 +86,7 @@ var api = {
       .then(res => res.json());
   },
   
+  // Creates a new race
   create: function (document, token) {
     const url = buildUrl(`${RACES_URL}`);
     return fetch(url, {
@@ -98,6 +101,7 @@ var api = {
       .then(res => res.json());
   },  
   
+  // Updates a specific race
   update: function (document, token) {
     const url = buildUrl(`${RACES_URL}${document.id}`);
     return fetch(url, {
@@ -111,6 +115,7 @@ var api = {
     }).then(normalizeResponseErrors);
   },
   
+  // Updates the vote count of the selected candidate
   vote: function (document, token) {
     const url = buildUrl(`${VOTE_URL}${document._id}`);
     return fetch(url, {
@@ -124,6 +129,7 @@ var api = {
     }).then(normalizeResponseErrors);
   },
   
+  // Updates the user's "hasVoted" status
   updateVoted: function (document, token) {
     const url = buildUrl(`${VOTED_URL}${document.username}`);
     return fetch(url, {
@@ -137,6 +143,7 @@ var api = {
     }).then(normalizeResponseErrors);
   },
 
+  // Removes a race
   remove: function (id, token) {
     const url = buildUrl(`${RACES_URL}${id}`);
     return fetch(url, {
@@ -150,6 +157,7 @@ var api = {
   },
 };
 
+// Takes the parameters to build the necessary URL for a function
 function buildUrl(path, query) {
   var url = new URL(path, window.location.origin);
   if (query) {
