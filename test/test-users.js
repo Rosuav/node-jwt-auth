@@ -20,6 +20,7 @@ describe('/api/user', function () {
   const district = '1';
   const state = 'OH';
   const city = 'Columbus';
+  const hasVoted = false;
 
   before(function () {
     return runServer('mongodb://localhost/jwt-auth-demo-test');
@@ -279,4 +280,32 @@ describe('/api/user', function () {
       });
     });
   });
+  // describe('/api/users/setVote', function () {
+  //   describe('PUT hasVoted', function () {
+  //     it('Should set users hasVoted flag to TRUE', function () {
+  //       return chai
+  //         .request(app)
+  //         .post('/api/users')
+  //         .send({ username, password, district, city, state })
+  //         .then(res => {
+  //           return chai    
+  //             .request(app)
+  //             .post(`/api/users/setVote/${username}`)
+  //             .send({ username });
+  //         })
+  //         .then( res => {
+  //           expect(res).to.have.status(204);
+  //           return User.findOne({ username: 'exampleUser'});
+  //         })
+  //         .then(user => {
+  //           expect(user.hasVoted).to.be.true;
+  //         });
+  //     });
+  //   });
+  // });
 });
+
+
+// .findOneAndUpdate(
+//   {username: req.params.username},
+//   {hasVoted: true}      

@@ -1,15 +1,4 @@
 'use strict';
-/**
- * API: DATA ACCESS LAYER (using fetch())
- * 
- * Primary Job: communicates with API endpoints. 
- *  
- * Rule of Thumb:
- * - Never manipulation DOM directly
- * - No jquery on this page, use `fetch()` not `$.AJAX()` or `$.getJSON()`
- * - Do not call render methods from this layer
- * 
- */
 
 const RACES_URL = '/api/races/';
 const VOTE_URL = '/api/races/votes/';
@@ -110,10 +99,7 @@ var api = {
   },  
   
   update: function (document, token) {
-    console.log('update running');
     const url = buildUrl(`${RACES_URL}${document.id}`);
-    // console.log('url: ', url);
-    // console.log(document);
     return fetch(url, {
       method: 'PUT',
       headers: {
@@ -123,14 +109,10 @@ var api = {
       },
       body: document ? JSON.stringify(document) : null
     }).then(normalizeResponseErrors);
-    //.then(res => res.json());
   },
   
   vote: function (document, token) {
-    console.log('update running');
     const url = buildUrl(`${VOTE_URL}${document._id}`);
-    // console.log('url: ', url);
-    // console.log(document);
     return fetch(url, {
       method: 'PUT',
       headers: {
@@ -140,11 +122,9 @@ var api = {
       },
       body: document ? JSON.stringify(document) : null
     }).then(normalizeResponseErrors);
-    //.then(res => res.json());
   },
   
   updateVoted: function (document, token) {
-    console.log('updateVoted running');
     const url = buildUrl(`${VOTED_URL}${document.username}`);
     return fetch(url, {
       method: 'PUT',
@@ -155,7 +135,6 @@ var api = {
       },
       body: document ? JSON.stringify(document) : null
     }).then(normalizeResponseErrors);
-    //.then(res => res.json());
   },
 
   remove: function (id, token) {
@@ -185,10 +164,8 @@ function normalizeResponseErrors(res) {
       res.headers.has('content-type') &&
       res.headers.get('content-type').startsWith('application/json')
     ) {
-      // It's a nice JSON error returned by us, so decode it
       return res.json().then(err => Promise.reject(err));
     }
-    // It's a less informative error returned by express
     return Promise.reject({
       code: res.status,
       message: res.statusText

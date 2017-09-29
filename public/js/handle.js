@@ -1,22 +1,6 @@
 /* global $, render, api refreshApp */
+/* eslint no-console: "off" */
 'use strict';
-/**
- * EVENT HANDLERS (callback methods for jQuery events listeners)
- * 
- * Primary Job:
- * - Prevent default actions on HTML elements
- * - Validate input
- * - Updates STATE/STORE
- * - Call API methods
- * - Call render methods
- * 
- * 
- * Rule of Thumb:
- * - Never manipulation DOM directly
- * - Never make fetch/AJAX calls directly
- * - Updates to STATE/STORE allowed
- * 
- */
 
 var handle = {
   tempLogin: function(event) {
@@ -44,8 +28,9 @@ var handle = {
 
   logoutAfterVote: function(event) {
     const state = event.data;
+    state.userInfo = {adminUser: 'start'};
     state.view = 'public';
-    render.page(state);
+    refreshApp();
   },
 
   electionAdmin: function(event) {
@@ -146,17 +131,13 @@ var handle = {
     const state = event.data;
     let candidateArr = [];
     const deletedCandidate = Number((event.target.id).charAt(event.target.id.length-1));
-    console.log(deletedCandidate);
-    console.log(state.visibleCandidates);
-    console.log('handler start for loop');
+
     for (let i = 1; i <= state.visibleCandidates; i++) {
       if (i !== deletedCandidate) { 
-        console.log($('#candidate-'+ i).val());
         candidateArr.push($('#candidate-'+ i).val());
       }
-      state.visibleCandidates--;
     }
-    console.log(candidateArr);
+    state.visibleCandidates--;
     render.candidateDel(state, candidateArr);
   },
   
@@ -280,140 +261,3 @@ function getRaceObject(state) {
 }
 
 
-// search: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   const el = $(event.target);
-//   const query = {
-//     name: el.find('[name=name]').val()
-//   };
-
-//   api.search(query)
-//     .then(response => {
-//       state.list = response;
-//       render.results(state);
-
-//       state.view = 'search';
-//       render.page(state);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
-// },
-
-// create: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   const el = $(event.target);
-
-//   const document = {
-//     name: el.find('[name=name]').val()
-//   };
-//   api.create(document, state.token)
-//     .then(response => {
-//       state.item = response;
-//       state.list = null; //invalidate cached list results
-//       render.detail(state);
-//       state.view = 'detail';
-//       render.page(state);
-//     })
-//     .catch(err => {
-//       if (err.code === 401) {
-//         state.backTo = state.view;
-//         state.view = 'signup';
-//         render.page(state);
-//       }
-//       console.error(err);
-//     });
-// },
-
-// update: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   const el = $(event.target);
-
-//   const document = {
-//     id: state.item.id,
-//     name: el.find('[name=name]').val()
-//   };
-//   api.update(document, state.token)
-//     .then(response => {
-//       state.item = response;
-//       state.list = null; //invalidate cached list results
-//       render.detail(state);
-//       state.view = 'detail';
-//       render.page(state);
-//     })
-//     .catch(err => {
-//       if (err.code === 401) {
-//         state.backTo = state.view;
-//         state.view = 'signup';
-//         render.page(state);
-//       }
-//       console.error(err);
-//     });
-// },
-
-// details: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   const el = $(event.target);
-
-//   const id = el.closest('li').attr('id');
-//   api.details(id)
-//     .then(response => {
-//       state.item = response;
-//       render.detail(state);
-//       state.view = 'detail';
-//       render.page(state);
-//     })
-//     .catch(err => {
-//       state.error = err;
-//       render.error(state);
-//     });
-// },
-
-// remove: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   const id = $(event.target).closest('li').attr('id');
-
-//   api.remove(id, state.token)
-//     .then(() => {
-//       state.list = null; //invalidate cached list results
-//       return handle.search(event);
-//     })
-//     .catch(err => {
-//       if (err.code === 401) {
-//         state.backTo = state.view;
-//         state.view = 'signup';
-//         render.page(state);
-//       }
-//       console.error(err);
-//     });
-// },
-// viewCreate: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   state.view = 'create';
-//   render.page(state);
-// },
-
-// viewSearch: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   if (!state.list) {
-//     handle.search(event);
-//     return;
-//   }
-//   state.view = 'search';
-//   render.page(state);
-// },
-// viewEdit: function (event) {
-//   event.preventDefault();
-//   const state = event.data;
-//   render.edit(state);
-
-//   state.view = 'edit';
-//   render.page(state);
-// }

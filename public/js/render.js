@@ -1,22 +1,9 @@
 /* global $ */
 'use strict';
-/**
- * RENDER METHODS
- * 
- * Primary Job: Direct DOM Manipulation
- * 
- * Rule of Thumb:
- * - Direct DOM manipulation OK
- * - Never update state/store
- * 
- */
-
 
 function fname() {}
 
 const myExpF = fname;
-
-
 
 var render = {
   page: function(state) {
@@ -150,11 +137,9 @@ var render = {
   },  
 
   candidateDel: function(state, candidateArr) {
-    console.log(candidateArr);
     $('.race-input-candidate').hide();
     $('.delete-candidate-btn').hide();
     $('.race-input-candidate').val('');
-    console.log('render starting del');
     for (let i = 0; i < candidateArr.length; i++) {
       $('#candidate-' + (i+1)).show();
       $('#del-' + (i+1)).show();
@@ -169,7 +154,7 @@ var render = {
     render.raceAdd(state);   
   }
 
-};    // end of render()
+}; 
 
 
 

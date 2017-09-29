@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint no-console: "off" */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -14,7 +16,6 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
 router.get('/', jsonParser, (req, res)  => {
-  console.log('get running');
   Race
     .find()
     .then(races => {
@@ -55,8 +56,11 @@ router.get('/:id', jsonParser, (req, res)  => {
 });
 
 router.put('/:id', jsonParser, jwtAuth, (req, res) => {
-  console.log('put call received');
-  console.log(req.body);
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    res.status(400).json({
+      error: 'Request path id and request body id values must match'
+    });
+  }
   Race
     .findOneAndUpdate(
       {_id: req.params.id},
@@ -85,7 +89,17 @@ router.put('/votes/:id', jsonParser, jwtAuth, (req, res) => {
 });
 
 router.post('/', jsonParser, jwtAuth, (req, res) => {
-  
+  const requiredFields = ['type', 'city', 'state', 'district'];
+  const missingField = requiredFields.find(field => !(field in req.body));
+  if (missingField) {
+    return res.status(422).json({
+      code: 422,
+      reason: 'ValidationError',
+      message: 'Missing field',
+      location: missingField
+    });
+  }
+
   Race
     .create({
       type: req.body.type,

@@ -1,24 +1,5 @@
 /* global jQuery, handle render dummyData api*/
 'use strict';
-/**
- * EVENT LISTENERS
- * 
- * Primary Job:
- * - Listen for user events like `click`, and call event handler methods
- * - Pass the "STORE" and the event objects and the event handlers
- * 
- * Setup:
- * jQuery's document ready "starts" the app
- * Event listeners are wrapped in jQuery's document.ready function
- * STORE is inside document.ready so it is protected
- * 
- * 
- * Rule of Thumb:
- * - Never manipulation DOM directly
- * - Never make fetch/AJAX calls directly
- * - Updates to STATE/STORE allowed
- * 
- */
 
 // Make STORE global so it can be easily qu
 var STORE;
@@ -61,7 +42,6 @@ jQuery(function ($) {
 });
 
 function refreshApp() {
-  console.log('refresh running');
   if(STORE.userInfo.adminUser === false) {
     return api.searchLoc(STORE)
       .then(response => {
@@ -81,19 +61,3 @@ function refreshApp() {
       });
   }
 }
-
-
-// 
-// $('#create').on('submit', STORE, handle.create);
-// $('#search').on('submit', STORE, handle.search);
-// $('#edit').on('submit', STORE, handle.update);
-
-// $('#result').on('click', '.detail', STORE, handle.details);
-// $('#result').on('click', '.remove', STORE, handle.remove);
-
-// $('#search').on('click', '.viewCreate', STORE, handle.viewCreate);
-// $('#detail').on('click', '.viewSearch', STORE, handle.viewSearch);
-// $('#detail').on('click', '.edit', STORE, handle.viewEdit);
-
-// // start app by triggering a search
-// $('#search').trigger('submit');
