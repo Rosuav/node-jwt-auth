@@ -60,6 +60,8 @@ var render = {
       <div class="race-block col-4 col-6 box">
           <span class="race-label">${raceLabel}</span>`;
       voteSum = race.candidates.reduce((sum, candidate) => {
+        console.log(sum.candidate.votes);
+        console.log(candidate.candidate.votes);
         return sum.candidate.votes + candidate.candidate.votes;  
       });
       race.candidates.forEach(candidate => {
