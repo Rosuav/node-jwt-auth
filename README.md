@@ -1,4 +1,4 @@
-![Screenshot](https://github.com/bmalin92/node-jwt-auth/Screenshots/Screenshot1.png)
+![Screenshot](https://raw.github.com/bmalin92/node-jwt-auth/master/Screenshots/Screenshot1.png)
 ![Screenshot](https://github.com/bmalin92/node-jwt-auth/Screenshots/Screenshot2.png)
 ![Screenshot](https://github.com/bmalin92/node-jwt-auth/Screenshots/Screenshot3.png)
 ![Screenshot](https://github.com/bmalin92/node-jwt-auth/Screenshots/Screenshot4.png)
