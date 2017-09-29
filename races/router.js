@@ -13,7 +13,7 @@ const jsonParser = bodyParser.json();
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
-router.get('/all', jsonParser, (req, res)  => {
+router.get('/', jsonParser, (req, res)  => {
   console.log('get running');
   Race
     .find()
