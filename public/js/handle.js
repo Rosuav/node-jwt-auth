@@ -28,6 +28,13 @@ var handle = {
   tempSignup: function(event) {
     const state = event.data;
     state.view = 'signup';
+    // $('#signup-city').html('');
+    // $('#signup').on('click', 'signup-city', function() {
+    //   for (let i=0; i<STORE.states.length; i++) {
+    //     $('#signup-city').append(`
+    //     <option value="${STORE.states[i].name}">${STORE.states[i].name}</option`);
+    //   }
+    // });
     render.page(state);
   },
 

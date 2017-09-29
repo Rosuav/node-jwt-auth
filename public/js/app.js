@@ -35,6 +35,10 @@ jQuery(function ($) {
     item: null,     // currently selected document
     token: localStorage.getItem('authToken'), // jwt token
     races: []
+    // states: [
+    //   {name: 'VA', districts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
+    //   {name: 'FL', districts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]}
+    // ]
   };
 
   // Setup all the event listeners, passing STATE and event to handlers
